@@ -1,0 +1,287 @@
+<resources>
+    <string name="app_name">Travel Diary</string>
+
+    <!-- Screens ↓ ↓ ↓ -->
+
+    <!-- Login screen -->
+    <string name="login_screen_email">Email</string>
+    <string name="login_screen_password">Password</string>
+    <string name="login_screen_login_button">Login</string>
+    <string name="login_screen_create_account">Create account</string>
+    <string name="login_screen_forgotten_password">Forgotten password</string>
+
+
+    <!-- Create account screen -->
+    <string name="create_account_screen_toolbar_title">Create account</string>
+    <string name="create_account_screen_firstname">First name</string>
+    <string name="create_account_screen_lastname">Last name</string>
+    <string name="create_account_screen_email">Email</string>
+    <string name="create_account_screen_password">Password</string>
+    <string name="create_account_screen_confirm_password">Confirm password</string>
+    <string name="create_account_screen_create_button">Create</string>
+    <string name="create_account_screen_homeland_country">Homeland country</string>
+    <string name="create_account_missing_values">All values are required</string>
+    <string name="create_account_password_not_match">Password and confirm password do not match</string>
+    <string name="create_account_screen_welcome">Account was created. Welcome to Travel Diary</string>
+
+
+    <!-- Forgotten password screen -->
+    <string name="forgotten_password_screen_toolbar_title">Reset password</string>
+    <string name="forgotten_password_screen_email">Email</string>
+    <string name="forgotten_password_screen_send_button">Send</string>
+
+
+    <!-- Flights screen -->
+    <string name="flights_screen_completed_flights_plural">You have completed %1$d flights!</string>
+    <string name="flights_screen_completed_flights_singular">You have completed %1$d flight!</string>
+    <string name="flights_screen_filter_date">Date</string>
+    <string name="flights_screen_filter_from">From</string>
+    <string name="flights_screen_filter_to">To</string>
+    <string name="flights_screen_filter_flight_duration">Flight duration (in minutes)</string>
+    <string name="flights_screen_filter_reset_button">Reset</string>
+
+
+
+    <!-- Completed flight detail screen -->
+    <string name="completed_flight_detail_screen_toolbar_title">Flight detail</string>
+    <string name="completed_flight_detail_screen_delete_title">Delete flight?</string>
+    <string name="completed_flight_detail_screen_are_you_sure">Are you sure you want to delete this flight?</string>
+    <string name="completed_flight_detail_screen_about_your_flight">About your flight</string>
+    <string name="completed_flight_detail_screen_departure_airport">Departure airport</string>
+    <string name="completed_flight_detail_screen_arrival_airport">Arrival airport</string>
+    <string name="completed_flight_detail_screen_flight_date">Flight date</string>
+    <string name="completed_flight_detail_screen_flight_duration">Flight duration</string>
+    <string name="completed_flight_detail_screen_flight_duration_hour_minute">%1$s hour %2$s minute</string>
+    <string name="completed_flight_detail_screen_flight_duration_hours_minute">%1$s hours %2$s minute</string>
+    <string name="completed_flight_detail_screen_flight_duration_hour_minutes">%1$s hour %2$s minutes</string>
+    <string name="completed_flight_detail_screen_flight_duration_hours_minutes">%1$s hours %2$s minutes</string>
+    <string name="completed_flight_detail_screen_about_airports">About airports</string>
+    <string name="completed_flight_detail_screen_airport_name">Airport name</string>
+    <string name="completed_flight_detail_screen_airport_city">City</string>
+    <string name="completed_flight_detail_screen_airport_region">Region</string>
+    <string name="completed_flight_detail_screen_airport_country">Country</string>
+    <string name="completed_flight_detail_screen_airport_sea_level">Sea level</string>
+    <string name="completed_flight_detail_screen_airport_sea_level_value">%1$s m</string>
+    <string name="completed_flight_detail_screen_airport_iata">IATA code</string>
+    <string name="completed_flight_detail_screen_airport_icao">ICAO code</string>
+
+
+    <!-- Add or edit flight screen -->
+    <string name="add_flight_screen_toolbar_add_title">Add flight</string>
+    <string name="add_flight_screen_toolbar_edit_title">Edit flight</string>
+    <string name="add_flight_screen_departure_airport">Departure airport</string>
+    <string name="add_flight_screen_arrival_airport">Arrival airport</string>
+    <string name="add_flight_screen_flight_date">Flight date</string>
+    <string name="add_flight_screen_flight_duration">Flight duration</string>
+    <string name="add_flight_screen_flight_hours">Hours</string>
+    <string name="add_flight_screen_flight_minutes">Minutes</string>
+    <string name="add_flight_screen_flight_return_flight">Add a return flight</string>
+    <string name="add_flight_screen_create_button">Create</string>
+    <string name="add_flight_screen_edit_button">Edit</string>
+    <string name="add_flight_screen_missing_values">Airports and flight date are mandatory</string>
+
+
+    <!-- Select airport screen -->
+    <string name="select_airport_screen_toolbar_title">Select airport</string>
+    <string name="select_airport_screen_search">Search by airport name, city or IATA code</string>
+    <string name="select_airport_screen_search_button">Search</string>
+    <string name="select_airport_screen_city">City: %1$s</string>
+    <string name="select_airport_screen_country">Country: %1$s</string>
+    <string name="select_airport_screen_iata">IATA: %1$s</string>
+
+
+    <!-- Places screen -->
+    <string name="places_screen_visited_places_plural">You have visited %1$d places!</string>
+    <string name="places_screen_visited_places_singular">You have visited %1$d place!</string>
+    <string name="places_screen_last_visit_date">Last visit date: %1$s</string>
+    <string name="places_screen_country">Country: %1$s</string>
+    <string name="places_screen_filter_date">Date</string>
+    <string name="places_screen_filter_from">From</string>
+    <string name="places_screen_filter_to">To</string>
+    <string name="places_screen_filter_cities">Cities</string>
+    <string name="places_screen_filter_places">Places</string>
+    <string name="places_screen_filter_reset_button">Reset</string>
+
+
+    <!-- Add or edit place screen -->
+    <string name="add_place_screen_toolbar_add_title">Add place</string>
+    <string name="add_place_screen_toolbar_edit_title">Edit place</string>
+    <string name="add_place_screen_do_you_want">What do you want to add?</string>
+    <string name="add_place_screen_city">City</string>
+    <string name="add_place_screen_or">or</string>
+    <string name="add_place_screen_place">Place</string>
+    <string name="add_place_screen_visited_city">Visited city</string>
+    <string name="add_place_screen_visited_population">City population</string>
+    <string name="add_place_screen_place_name">Place name</string>
+    <string name="add_place_screen_place_latitude">Latitude</string>
+    <string name="add_place_screen_place_longitude">Longitude</string>
+    <string name="add_place_screen_place_region">Region</string>
+    <string name="add_place_screen_country">Country</string>
+    <string name="add_place_screen_last_visit_date">Last visit date</string>
+    <string name="add_place_screen_note">Note</string>
+    <string name="add_place_screen_create_button">Create</string>
+    <string name="add_place_screen_button">Edit</string>
+    <string name="add_place_screen_upload_image_button">Upload title image</string>
+    <string name="add_place_screen_missing_values_city">City and last visit date are mandatory</string>
+    <string name="add_place_screen_missing_values_place">Last visit date ,place name and location are mandatory</string>
+
+
+    <!-- Select city screen -->
+    <string name="select_city_screen_toolbar_title">Select city</string>
+    <string name="select_city_screen_search">Search by name</string>
+    <string name="select_city_screen_latitude">Latitude</string>
+    <string name="select_city_screen_longitude">Longitude</string>
+    <string name="select_city_screen_reset_button">Reset</string>
+    <string name="select_city_screen_search_button">Search</string>
+    <string name="select_city_screen_city">City: %1$s</string>
+    <string name="select_city_screen_country">Country: %1$s</string>
+
+
+    <!-- Google maps screen -->
+    <string name="google_maps_screen_toolbar_title">Select point on the map</string>
+    <string name="google_maps_screen_confirm">Confirm</string>
+
+
+    <!-- Visited place detail screen -->
+    <string name="visited_place_detail_screen_toolbar_title">Visit detail</string>
+    <string name="visited_place_detail_screen_about_your_visit">About your visit</string>
+    <string name="visited_place_detail_screen_about_city">About city</string>
+    <string name="visited_place_detail_screen_about_place">About place</string>
+    <string name="visited_place_detail_screen_note">Note</string>
+    <string name="visited_place_detail_screen_last_visit_date">Last visit date</string>
+    <string name="visited_place_detail_screen_name">Name</string>
+    <string name="visited_place_detail_screen_country">Country</string>
+    <string name="visited_place_detail_screen_population">Population</string>
+    <string name="visited_place_detail_screen_region">Region</string>
+    <string name="visited_place_detail_screen_delete_title">Delete visit?</string>
+    <string name="visited_place_detail_screen_are_you_sure">Are you sure you want to delete this visit?</string>
+
+
+    <!-- CountriesScreen screen -->
+    <string name="countries_screen_visited_countries_plural">You have visited %1$d countries!</string>
+    <string name="countries_screen_visited_countries_singular">You have visited %1$d country!</string>
+    <string name="countries_screen_last_visit_date">Last visit date: %1$s</string>
+    <string name="countries_screen_visited_places">Visited places: %1$s</string>
+    <string name="countries_screen_continent">Continent: %1$s</string>
+    <string name="countries_screen_filter_continent">Continent</string>
+    <string name="countries_screen_filter_reset">Reset</string>
+
+
+    <!-- Add or edit country screen -->
+    <string name="add_country_screen_toolbar_add_title">Add visit</string>
+    <string name="add_country_screen_toolbar_edit_title">Edit visit</string>
+    <string name="add_country_screen_country">Country</string>
+    <string name="add_country_screen_last_visit_date">Last visit date</string>
+    <string name="add_country_screen_visited_places">Visited places</string>
+    <string name="add_country_screen_create_button">Create</string>
+    <string name="add_country_screen_edit_button">Edit</string>
+    <string name="add_country_screen_missing_values">Country and last visit date are mandatory</string>
+
+
+    <!-- Select country screen -->
+    <string name="select_country_screen_toolbar_title">Select country</string>
+    <string name="select_country_screen_capital">Capital: %1$s</string>
+    <string name="select_country_continent">Continent: %1$s</string>
+    <string name="select_country_subregion">Subregion: %1$s</string>
+    <string name="select_country_capital">Capital: %1$s</string>
+    <string name="select_country_population">Population: %1$s</string>
+    <string name="select_country_filter_continent">Continent</string>
+    <string name="select_country_filter_all">All</string>
+
+
+    <!-- Visited country detail screen -->
+    <string name="visited_country_detail_screen_toolbar_title">Visit detail</string>
+    <string name="visited_country_detail_screen_about_your_visit">About your visit</string>
+    <string name="visited_country_detail_screen_about_country">About country</string>
+    <string name="visited_country_detail_screen_delete_title">Delete visit?</string>
+    <string name="visited_country_detail_screen_are_you_sure">Are you sure you want to delete this visit?</string>
+    <string name="visited_country_detail_screen_last_visit_date">Last visit date</string>
+    <string name="visited_country_detail_screen_visited_places">Visited places</string>
+    <string name="visited_country_detail_screen_capital_city">Capital city</string>
+    <string name="visited_country_detail_screen_language">Language</string>
+    <string name="visited_country_detail_screen_population">Population</string>
+    <string name="visited_country_detail_screen_continent">Continent</string>
+    <string name="visited_country_detail_screen_subregion">Subregion</string>
+    <string name="visited_country_detail_screen_sea_access">Access to the sea</string>
+    <string name="visited_country_detail_screen_yes">Yes</string>
+    <string name="visited_country_detail_screen_no">No</string>
+    <string name="visited_country_detail_screen_time_zones">Time zones</string>
+    <string name="visited_country_detail_screen_currency">Currency</string>
+    <string name="visited_country_detail_screen_call_number">Call number</string>
+
+
+
+    <!--Settings screen -->
+    <string name="settings_screen_toolbar_title">Settings</string>
+    <string name="settings_screen_language">Language</string>
+    <string name="settings_screen_display_mode">Display mode</string>
+    <string name="settings_screen_light_mode">Light mode</string>
+    <string name="settings_screen_dark_mode">Dark mode</string>
+    <string name="settings_screen_about_my_homeland_button">About my homeland</string>
+    <string name="settings_screen_change_user_data_button">Change user data</string>
+    <string name="settings_screen_change_password_button">Change password</string>
+    <string name="settings_screen_delete_account_button">Delete account</string>
+    <string name="settings_screen_logout_button">Logout</string>
+    <string name="settings_screen_reset_password">Reset password?</string>
+    <string name="settings_screen_are_you_sure_password">Are you sure you want to send email for resetting password?</string>
+    <string name="settings_screen_delete_account">Delete account?</string>
+    <string name="settings_screen_are_you_sure_account">Are you sure you want to delete your account?</string>
+    <string name="settings_screen_reset_password_mail_send">Email for resetting was send to your email</string>
+    <string name="settings_screen_reset_password_mail_send_failed">Sending email for resetting failed</string>
+
+
+    <!--About my homeland screen-->
+    <string name="about_my_homeland_screen_toolbar_title">About my homeland</string>
+
+
+    <!--Change user data screen-->
+    <string name="change_user_data_screen_toolbar_title">Change user data</string>
+    <string name="change_user_data_screen_firstname">First name</string>
+    <string name="change_user_data_screen_lastname">Last name</string>
+    <string name="change_user_data_screen_homeland_country">Homeland country</string>
+    <string name="change_user_data_screen_confirm_button">Confirm</string>
+    <string name="change_user_data_screen_missing_values">All values are required</string>
+    <string name="change_user_data_screen_successfully_changed">User data were successfully changed</string>
+
+
+
+    <!-- Components ↓ ↓ ↓ -->
+    <!-- BottomNavigationBar -->
+    <string name="bottom_navigation_bar_flights">Flights</string>
+    <string name="bottom_navigation_bar_places">Places</string>
+    <string name="bottom_navigation_bar_countries">Countries</string>
+    <string name="bottom_navigation_bar_map">Map</string>
+
+
+    <!-- SortAlertDialog -->
+    <string name="sort_alert_dialog_sort_by">Sort by</string>
+    <string name="sort_alert_dialog_date_newest_first">Date - newest first</string>
+    <string name="sort_alert_dialog_date_oldest_first">Date - oldest first</string>
+    <string name="sort_alert_dialog_duration_longest_first">Flight duration - longest first</string>
+    <string name="sort_alert_dialog_duration_shortest_first">Flight duration - shortest first</string>
+    <string name="sort_alert_dialog_name_abc">Name A-Z</string>
+    <string name="sort_alert_dialog_name_zyx">Name Z-A</string>
+    <string name="sort_alert_dialog_close_button">Close</string>
+
+
+    <!-- Languages -->
+    <string name="english">English</string>
+    <string name="slovak">Slovenčina</string>
+
+
+    <!-- Continents -->
+    <string name="north_america">North America</string>
+    <string name="south_america">South America</string>
+    <string name="africa">Africa</string>
+    <string name="antarctica">Antarctica</string>
+    <string name="europe">Europe</string>
+    <string name="asia">Asia</string>
+    <string name="oceania">Oceania</string>
+
+
+    <!-- General -->
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="search">Search…</string>
+</resources>
+

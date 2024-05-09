@@ -1,0 +1,287 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Cestovateľský denník</string>
+
+    <!-- Screens ↓ ↓ ↓ -->
+
+    <!-- Login screen -->
+    <string name="login_screen_email">Email</string>
+    <string name="login_screen_password">Heslo</string>
+    <string name="login_screen_login_button">Prihlásiť</string>
+    <string name="login_screen_create_account">Vytvoriť účet</string>
+    <string name="login_screen_forgotten_password">Zabudnuté heslo</string>
+
+
+    <!-- Create account screen -->
+    <string name="create_account_screen_toolbar_title">Vytvoriť účet</string>
+    <string name="create_account_screen_firstname">Meno</string>
+    <string name="create_account_screen_lastname">Priezvisko</string>
+    <string name="create_account_screen_email">Email</string>
+    <string name="create_account_screen_password">Heslo</string>
+    <string name="create_account_screen_confirm_password">Potvrdiť heslo</string>
+    <string name="create_account_screen_create_button">Vytvoriť</string>
+    <string name="create_account_screen_homeland_country">Domovská krajina</string>
+    <string name="create_account_missing_values">Všetky hodnoty musia byť vyplnené</string>
+    <string name="create_account_password_not_match">Heslo sa nezhoduje s jeho potvrdením</string>
+    <string name="create_account_screen_welcome">Účet bol vytvorený. Vitajte v Cestovateľskom denníku</string>
+
+
+    <!-- Forgotten password screen -->
+    <string name="forgotten_password_screen_toolbar_title">Resetovať heslo</string>
+    <string name="forgotten_password_screen_email">Email</string>
+    <string name="forgotten_password_screen_send_button">Poslať</string>
+
+
+    <!-- Flights screen -->
+    <string name="flights_screen_completed_flights_plural">Absolvoval/a si %1$d letov!</string>
+    <string name="flights_screen_completed_flights_singular">Absolvoval/a si %1$d let!</string>
+    <string name="flights_screen_filter_date">Dátum</string>
+    <string name="flights_screen_filter_from">Od</string>
+    <string name="flights_screen_filter_to">Do</string>
+    <string name="flights_screen_filter_flight_duration">Dĺžka letu (v minutách)</string>
+    <string name="flights_screen_filter_reset_button">Resetovať</string>
+
+
+
+    <!-- Completed flight detail screen -->
+    <string name="completed_flight_detail_screen_toolbar_title">Detail letu</string>
+    <string name="completed_flight_detail_screen_delete_title">Vymazať let?</string>
+    <string name="completed_flight_detail_screen_are_you_sure">Si si istý, že chceš vymazať tento let?</string>
+    <string name="completed_flight_detail_screen_about_your_flight">O tvojom lete</string>
+    <string name="completed_flight_detail_screen_departure_airport">Letisko odletu</string>
+    <string name="completed_flight_detail_screen_arrival_airport">Letisko príletu</string>
+    <string name="completed_flight_detail_screen_flight_date">Dátum letu</string>
+    <string name="completed_flight_detail_screen_flight_duration">Dĺžka letu</string>
+    <string name="completed_flight_detail_screen_flight_duration_hour_minute">%1$s hodina %2$s minúta</string>
+    <string name="completed_flight_detail_screen_flight_duration_hours_minute">%1$s hodín %2$s minút</string>
+    <string name="completed_flight_detail_screen_flight_duration_hour_minutes">%1$s hodina %2$s minút</string>
+    <string name="completed_flight_detail_screen_flight_duration_hours_minutes">%1$s hodín %2$s minút</string>
+    <string name="completed_flight_detail_screen_about_airports">O letiskách</string>
+    <string name="completed_flight_detail_screen_airport_name">Meno letiska</string>
+    <string name="completed_flight_detail_screen_airport_city">Mesto</string>
+    <string name="completed_flight_detail_screen_airport_region">Región</string>
+    <string name="completed_flight_detail_screen_airport_country">Krajina</string>
+    <string name="completed_flight_detail_screen_airport_sea_level">Nadmorská výška</string>
+    <string name="completed_flight_detail_screen_airport_sea_level_value">%1$s m</string>
+    <string name="completed_flight_detail_screen_airport_iata">IATA kód</string>
+    <string name="completed_flight_detail_screen_airport_icao">ICAO kód</string>
+
+
+    <!-- Add or edit flight screen -->
+    <string name="add_flight_screen_toolbar_add_title">Pridať let</string>
+    <string name="add_flight_screen_toolbar_edit_title">Upraviť let</string>
+    <string name="add_flight_screen_departure_airport">Letisko odletu</string>
+    <string name="add_flight_screen_arrival_airport">Letisko príletu</string>
+    <string name="add_flight_screen_flight_date">Dátum letu</string>
+    <string name="add_flight_screen_flight_duration">Dĺžka letu</string>
+    <string name="add_flight_screen_flight_hours">Hodiny</string>
+    <string name="add_flight_screen_flight_minutes">Minúty</string>
+    <string name="add_flight_screen_flight_return_flight">Pridať spiatočný let</string>
+    <string name="add_flight_screen_create_button">Vytvoriť</string>
+    <string name="add_flight_screen_edit_button">Upraviť</string>
+    <string name="add_flight_screen_missing_values">Letiská a dátum letu sú povinné údaje</string>
+
+
+    <!-- Select airport screen -->
+    <string name="select_airport_screen_toolbar_title">Vybrať letisko</string>
+    <string name="select_airport_screen_search">Hľadaj podľa názvu letiska, mesta alebo IATA kódu</string>
+    <string name="select_airport_screen_search_button">Hľadať</string>
+    <string name="select_airport_screen_city">Mesto: %1$s</string>
+    <string name="select_airport_screen_country">Krajina: %1$s</string>
+    <string name="select_airport_screen_iata">IATA: %1$s</string>
+
+
+    <!-- Places screen -->
+    <string name="places_screen_visited_places_plural">Navštívil/a si %1$d miest!</string>
+    <string name="places_screen_visited_places_singular">Navštívil/a si %1$d miesto!</string>
+    <string name="places_screen_last_visit_date">Dátum poslednej návštevy: %1$s</string>
+    <string name="places_screen_country">Krajina: %1$s</string>
+    <string name="places_screen_filter_date">Dátum</string>
+    <string name="places_screen_filter_from">Od</string>
+    <string name="places_screen_filter_to">Do</string>
+    <string name="places_screen_filter_cities">Mestá</string>
+    <string name="places_screen_filter_places">Miesta</string>
+    <string name="places_screen_filter_reset_button">Resetovať</string>
+
+
+    <!-- Add or edit place screen -->
+    <string name="add_place_screen_toolbar_add_title">Pridať miesto</string>
+    <string name="add_place_screen_toolbar_edit_title">Upraviť miesto</string>
+    <string name="add_place_screen_do_you_want">Čo chceš pridať?</string>
+    <string name="add_place_screen_city">Mesto</string>
+    <string name="add_place_screen_or">alebo</string>
+    <string name="add_place_screen_place">Miesto</string>
+    <string name="add_place_screen_visited_city">Navštívené mesto</string>
+    <string name="add_place_screen_visited_population">Počet obyvateľov</string>
+    <string name="add_place_screen_place_name">Názov miesta</string>
+    <string name="add_place_screen_place_latitude">Zemepisná šírka</string>
+    <string name="add_place_screen_place_longitude">Zemepisná dĺžka</string>
+    <string name="add_place_screen_place_region">Región</string>
+    <string name="add_place_screen_country">Krajina</string>
+    <string name="add_place_screen_last_visit_date">Dátum poslednej návštevy</string>
+    <string name="add_place_screen_note">Poznámka</string>
+    <string name="add_place_screen_create_button">Vytvoriť</string>
+    <string name="add_place_screen_button">Upraviť</string>
+    <string name="add_place_screen_upload_image_button">Nahrať titulnú fotku</string>
+    <string name="add_place_screen_missing_values_city">Mesto a dátum poslednej návštevy sú povinné údaje</string>
+    <string name="add_place_screen_missing_values_place">Dátum poslednej návštevy, názov miesta a lokalita sú povinné údaje</string>
+
+
+    <!-- Select city screen -->
+    <string name="select_city_screen_toolbar_title">Vybrať mesto</string>
+    <string name="select_city_screen_search">Vyhľadaj podľa mena</string>
+    <string name="select_city_screen_latitude">Zemepisná šírka</string>
+    <string name="select_city_screen_longitude">Zemepisná dĺžka</string>
+    <string name="select_city_screen_reset_button">Resetovať</string>
+    <string name="select_city_screen_search_button">Hľadať</string>
+    <string name="select_city_screen_city">Mesto: %1$s</string>
+    <string name="select_city_screen_country">Krajina: %1$s</string>
+
+
+    <!-- Google maps screen -->
+    <string name="google_maps_screen_toolbar_title">Vyber miesto na mape</string>
+    <string name="google_maps_screen_confirm">Potvrdiť</string>
+
+
+    <!-- Visited place detail screen -->
+    <string name="visited_place_detail_screen_toolbar_title">Detail návštevy</string>
+    <string name="visited_place_detail_screen_about_your_visit">O tvojej návšteve</string>
+    <string name="visited_place_detail_screen_about_city">O meste</string>
+    <string name="visited_place_detail_screen_about_place">O mieste</string>
+    <string name="visited_place_detail_screen_note">Poznámka</string>
+    <string name="visited_place_detail_screen_last_visit_date">Dátum poslednej návštevy</string>
+    <string name="visited_place_detail_screen_name">Názov</string>
+    <string name="visited_place_detail_screen_country">Krajina</string>
+    <string name="visited_place_detail_screen_population">Počet obyvateľov</string>
+    <string name="visited_place_detail_screen_region">Región</string>
+    <string name="visited_place_detail_screen_delete_title">Vymazať návštevu?</string>
+    <string name="visited_place_detail_screen_are_you_sure">Si si istý, že chceš vymazať túto návštevu?</string>
+
+
+    <!-- CountriesScreen screen -->
+    <string name="countries_screen_visited_countries_plural">Navštívil/a si %1$d krajín!</string>
+    <string name="countries_screen_visited_countries_singular">Navštívil/a si %1$d krajinu!</string>
+    <string name="countries_screen_last_visit_date">Dátum poslednej návštevy: %1$s</string>
+    <string name="countries_screen_visited_places">Navštívené miesta: %1$s</string>
+    <string name="countries_screen_continent">Kontinent: %1$s</string>
+    <string name="countries_screen_filter_continent">Kontinent</string>
+    <string name="countries_screen_filter_reset">Resetovať</string>
+
+
+    <!-- Add or edit country screen -->
+    <string name="add_country_screen_toolbar_add_title">Pridať návštevu</string>
+    <string name="add_country_screen_toolbar_edit_title">Upraviť návštevu</string>
+    <string name="add_country_screen_country">Krajina</string>
+    <string name="add_country_screen_last_visit_date">Dátum poslednej návštevy</string>
+    <string name="add_country_screen_visited_places">Navštívené miesta</string>
+    <string name="add_country_screen_create_button">Vytvoriť</string>
+    <string name="add_country_screen_edit_button">Upraviť</string>
+    <string name="add_country_screen_missing_values">Krajina a dátum poslednej návštevy sú povinné údaje</string>
+
+
+    <!-- Select country screen -->
+    <string name="select_country_screen_toolbar_title">Vybrať krajinu</string>
+    <string name="select_country_screen_capital">Hlavné mesto: %1$s</string>
+    <string name="select_country_continent">Kontinent: %1$s</string>
+    <string name="select_country_subregion">Región: %1$s</string>
+    <string name="select_country_capital">Hlavné mesto: %1$s</string>
+    <string name="select_country_population">Počet obyvateľov: %1$s</string>
+    <string name="select_country_filter_continent">Kontinent</string>
+    <string name="select_country_filter_all">Všetko</string>
+
+
+    <!-- Visited country detail screen -->
+    <string name="visited_country_detail_screen_toolbar_title">Detail návštevy</string>
+    <string name="visited_country_detail_screen_about_your_visit">O tvojej návšteve</string>
+    <string name="visited_country_detail_screen_about_country">O krajine</string>
+    <string name="visited_country_detail_screen_delete_title">Vymazať návštevu?</string>
+    <string name="visited_country_detail_screen_are_you_sure">Si si istý, že chceš vymazať túto návštevu?</string>
+    <string name="visited_country_detail_screen_last_visit_date">Dátum poslednej návštevy</string>
+    <string name="visited_country_detail_screen_visited_places">Navštívené miesta</string>
+    <string name="visited_country_detail_screen_capital_city">Hlavné mesto</string>
+    <string name="visited_country_detail_screen_language">Jazyk</string>
+    <string name="visited_country_detail_screen_population">Počet obyvateľov</string>
+    <string name="visited_country_detail_screen_continent">Kontinent</string>
+    <string name="visited_country_detail_screen_subregion">Región</string>
+    <string name="visited_country_detail_screen_sea_access">Prístup k moru</string>
+    <string name="visited_country_detail_screen_yes">Áno</string>
+    <string name="visited_country_detail_screen_no">Nie</string>
+    <string name="visited_country_detail_screen_time_zones">Časové zóny</string>
+    <string name="visited_country_detail_screen_currency">Mena</string>
+    <string name="visited_country_detail_screen_call_number">Telefónna predvoľba</string>
+
+
+
+    <!--Settings screen -->
+    <string name="settings_screen_toolbar_title">Nastavenia</string>
+    <string name="settings_screen_language">Jazyk</string>
+    <string name="settings_screen_display_mode">Režím zobrazenia</string>
+    <string name="settings_screen_light_mode">Svetlý mód</string>
+    <string name="settings_screen_dark_mode">Tmavý mód</string>
+    <string name="settings_screen_about_my_homeland_button">O mojej domovskej krajine</string>
+    <string name="settings_screen_change_user_data_button">Zmeniť používateľské dáta</string>
+    <string name="settings_screen_change_password_button">Zmeniť heslo</string>
+    <string name="settings_screen_delete_account_button">Vymazať účet</string>
+    <string name="settings_screen_logout_button">Odhlásiť</string>
+    <string name="settings_screen_reset_password">Resetovať heslo?</string>
+    <string name="settings_screen_are_you_sure_password">Si si istý, že chceš odoslať email pre resetovanie hesla?</string>
+    <string name="settings_screen_delete_account">Vymazať účet?</string>
+    <string name="settings_screen_are_you_sure_account">Si si istý, že chceš vymazať účet?</string>
+    <string name="settings_screen_reset_password_mail_send">Email pre resetovanie hesla bol odoslaný na tvoj email</string>
+    <string name="settings_screen_reset_password_mail_send_failed">Poslanie emailu zlyhalo</string>
+
+
+    <!--About my homeland screen-->
+    <string name="about_my_homeland_screen_toolbar_title">O mojej domovskej krajine</string>
+
+
+    <!--Change user data screen-->
+    <string name="change_user_data_screen_toolbar_title">Zmeniť používateľské dáta</string>
+    <string name="change_user_data_screen_firstname">Meno</string>
+    <string name="change_user_data_screen_lastname">Priezvisko</string>
+    <string name="change_user_data_screen_homeland_country">Domovská krajina</string>
+    <string name="change_user_data_screen_confirm_button">Potvrdiť</string>
+    <string name="change_user_data_screen_missing_values">Všetky hodnoty musia byť vyplnené</string>
+    <string name="change_user_data_screen_successfully_changed">Používateľské dáta boli úspešne zmenené</string>
+
+
+
+    <!-- Components ↓ ↓ ↓ -->
+    <!-- BottomNavigationBar -->
+    <string name="bottom_navigation_bar_flights">Lety</string>
+    <string name="bottom_navigation_bar_places">Miesta</string>
+    <string name="bottom_navigation_bar_countries">Krajiny</string>
+    <string name="bottom_navigation_bar_map">Mapa</string>
+
+
+    <!-- SortAlertDialog -->
+    <string name="sort_alert_dialog_sort_by">Zoradiť podľa</string>
+    <string name="sort_alert_dialog_date_newest_first">Dátum - najnovšie prvé</string>
+    <string name="sort_alert_dialog_date_oldest_first">Dátum - najstaršie prvé</string>
+    <string name="sort_alert_dialog_duration_longest_first">Dĺžka letu - najdlhšie prvé</string>
+    <string name="sort_alert_dialog_duration_shortest_first">Dĺžka letu - najkratšie prvé</string>
+    <string name="sort_alert_dialog_name_abc">Názov A-Z</string>
+    <string name="sort_alert_dialog_name_zyx">Názov Z-A</string>
+    <string name="sort_alert_dialog_close_button">Zatvoriť</string>
+
+
+    <!-- Languages -->
+    <string name="english">English</string>
+    <string name="slovak">Slovenčina</string>
+
+
+    <!-- Continents -->
+    <string name="north_america">Severná Amerikca</string>
+    <string name="south_america">Južná Amerika</string>
+    <string name="africa">Afrika</string>
+    <string name="antarctica">Antarktída</string>
+    <string name="europe">Európa</string>
+    <string name="asia">Ázia</string>
+    <string name="oceania">Oceánia</string>
+
+
+    <!-- General -->
+    <string name="confirm">Potvrdiť</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="search">Hľadať…</string>
+</resources>
+
