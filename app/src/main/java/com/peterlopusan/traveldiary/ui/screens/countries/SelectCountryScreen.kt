@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
@@ -43,14 +42,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.africa
 import com.peterlopusan.traveldiary.antarctica
 import com.peterlopusan.traveldiary.asia
-import com.peterlopusan.traveldiary.data.models.country.Country
 import com.peterlopusan.traveldiary.europe
+import com.peterlopusan.traveldiary.models.country.Country
 import com.peterlopusan.traveldiary.northAmerica
 import com.peterlopusan.traveldiary.oceania
 import com.peterlopusan.traveldiary.southAmerica
@@ -58,18 +58,15 @@ import com.peterlopusan.traveldiary.ui.components.CustomCheckbox
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.TranslateApiManager
 import com.peterlopusan.traveldiary.utils.openMap
 import com.peterlopusan.traveldiary.utils.removeSquareBrackets
 
 
 @Composable
-fun SelectCountryScreen() {
+fun SelectCountryScreen(navController: NavController) {
     val viewModel = MainActivity.countryViewModel
     val countryList: SnapshotStateList<Country> = remember { mutableStateListOf() }
     val filteredCountryList: SnapshotStateList<Country> = remember { mutableStateListOf() }
@@ -118,10 +115,11 @@ fun SelectCountryScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.select_country_screen_toolbar_title),
             showBackButton = true,
             filterButtonClick = { showBottomSheet.value = true }
@@ -130,7 +128,7 @@ fun SelectCountryScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
         ) {
             LazyColumn {
@@ -139,7 +137,7 @@ fun SelectCountryScreen() {
                         modifier = Modifier
                             .clickable {
                                 viewModel.selectedCountry = country
-                                MainActivity.navController.popBackStack()
+                                navController.popBackStack()
                             },
                         country = country
                     )
@@ -173,7 +171,7 @@ private fun SelectCountryFilterSheet(
 
 
     ModalBottomSheet(
-        containerColor = MaterialTheme.colors.secondaryBackground,
+        containerColor = LocalTravelDiaryColors.current.secondaryBackground,
         onDismissRequest = {
             showFilterSheet.value = false
         },
@@ -188,7 +186,7 @@ private fun SelectCountryFilterSheet(
             CustomTextField(
                 hint = stringResource(id = R.string.search),
                 text = searchText.value,
-                borderColor = MaterialTheme.colors.secondaryTextColor,
+                borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                 onValueChange = {
                     searchText.value = it
                     filterCountryList(
@@ -204,7 +202,7 @@ private fun SelectCountryFilterSheet(
                         northAmericaChecked = northAmericaChecked.value
                     )
                 },
-                startIcon = R.drawable.search_icon,
+                icon = R.drawable.search_icon,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -212,13 +210,13 @@ private fun SelectCountryFilterSheet(
             HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
-                    .background(MaterialTheme.colors.primaryTextColor)
+                    .background(LocalTravelDiaryColors.current.primaryTextColor)
             )
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
                 text = stringResource(id = R.string.select_country_filter_continent),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -437,7 +435,7 @@ fun SelectCountryItem(modifier: Modifier, country: Country) {
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .padding(10.dp),
         horizontalArrangement = Arrangement.Start
     ) {
@@ -454,7 +452,7 @@ fun SelectCountryItem(modifier: Modifier, country: Country) {
         Column(Modifier.weight(1f)) {
             Text(
                 text = country.name?.common ?: "",
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -465,7 +463,7 @@ fun SelectCountryItem(modifier: Modifier, country: Country) {
 
             Text(
                 text = stringResource(id = R.string.select_country_continent, removeSquareBrackets(country.continents)),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -475,7 +473,7 @@ fun SelectCountryItem(modifier: Modifier, country: Country) {
 
             Text(
                 text = stringResource(id = R.string.select_country_subregion, TranslateApiManager().translateSubregion(country.subregion) ?: ""),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -519,7 +517,7 @@ private fun filterCountryList(
     list.addAll(countryList)
 
     if (searchText.isNotBlank()) {
-        list = list.filter { it.name?.common?.contains(searchText) == true || it.name?.official?.contains(searchText) == true }.toMutableList()
+        list = list.filter { it.name?.common?.lowercase()?.contains(searchText.lowercase().trimEnd()) == true || it.name?.official?.lowercase()?.contains(searchText.lowercase().trimEnd()) == true }.toMutableList()
     }
 
     if (!europeChecked) {

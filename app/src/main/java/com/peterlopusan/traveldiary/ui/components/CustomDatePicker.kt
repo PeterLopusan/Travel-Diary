@@ -1,7 +1,6 @@
 package com.peterlopusan.traveldiary.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
@@ -28,11 +25,7 @@ import androidx.compose.ui.window.Dialog
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.theme.CancelColor
 import com.peterlopusan.traveldiary.ui.theme.ConfirmColor
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
-import com.peterlopusan.traveldiary.utils.showLogs
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,31 +47,31 @@ fun CustomDatePicker(
             Column(
                 modifier = modifier
                     .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.primaryBackground)
+                    .background(LocalTravelDiaryColors.current.primaryBackground)
             ) {
                 DatePicker(
                     state = dateState,
                     colors = DatePickerDefaults.colors(
-                        titleContentColor = MaterialTheme.colors.primaryTextColor,
-                        containerColor = MaterialTheme.colors.secondaryBackground,
-                        currentYearContentColor = MaterialTheme.colors.primaryTextColor,
+                        titleContentColor = LocalTravelDiaryColors.current.primaryTextColor,
+                        containerColor = LocalTravelDiaryColors.current.secondaryBackground,
+                        currentYearContentColor = LocalTravelDiaryColors.current.primaryTextColor,
                         selectedYearContainerColor = ConfirmColor,
-                        dayContentColor = MaterialTheme.colors.primaryTextColor,
+                        dayContentColor = LocalTravelDiaryColors.current.primaryTextColor,
                         todayDateBorderColor = ConfirmColor,
-                        headlineContentColor = MaterialTheme.colors.primaryTextColor,
+                        headlineContentColor = LocalTravelDiaryColors.current.primaryTextColor,
                         selectedDayContainerColor = ConfirmColor,
-                        selectedDayContentColor = MaterialTheme.colors.primaryTextColor,
-                        selectedYearContentColor = MaterialTheme.colors.primaryTextColor,
+                        selectedDayContentColor = LocalTravelDiaryColors.current.primaryTextColor,
+                        selectedYearContentColor = LocalTravelDiaryColors.current.primaryTextColor,
                         //dayInSelectionRangeContainerColor = Color.Red,
                         //disabledDayContentColor = Color.Red,
                         //dayInSelectionRangeContentColor = Color.Red,
                         //disabledSelectedDayContainerColor =  Color.Red,
                         //subheadContentColor = Color.Red,
-                        todayContentColor = MaterialTheme.colors.primaryTextColor,
+                        todayContentColor = LocalTravelDiaryColors.current.primaryTextColor,
 
 
                         disabledSelectedDayContentColor = Color.Green,
-                        weekdayContentColor = MaterialTheme.colors.primaryTextColor,
+                        weekdayContentColor = LocalTravelDiaryColors.current.primaryTextColor,
                         //yearContentColor = Color.Red,
                     )
                 )

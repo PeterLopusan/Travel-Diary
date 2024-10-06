@@ -28,3 +28,5 @@ const val countryFilterOceaniaCheckedKey = "countryFilterOceaniaChecked"
 const val countryFilterAntarcticaCheckedKey = "countryFilterAntarcticaChecked"
 const val countryFilterNorthAmericaCheckedKey = "countryFilterNorthAmericaChecked"
 const val countryFilterSouthAmericaCheckedKey = "countryFilterSouthAmericaChecked"
+
+const val mapTypeKey = "mapType"

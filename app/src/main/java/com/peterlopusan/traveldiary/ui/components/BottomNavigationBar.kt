@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,15 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.peterlopusan.traveldiary.R
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
-import com.peterlopusan.traveldiary.utils.showLogs
 
 @Composable
 fun BottomNavigationBar(
@@ -42,7 +36,7 @@ fun BottomNavigationBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .shadow(elevation = 1.dp)
             .padding(horizontal = 10.dp)
             .padding(top = 5.dp)
@@ -116,7 +110,7 @@ fun BottomNavigationBarItem(
 
         Text(
             text = stringResource(id = textId),
-            color = MaterialTheme.colors.primaryTextColor,
+            color = LocalTravelDiaryColors.current.primaryTextColor,
             style = TextStyle(
                 fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                 fontFamily = fonts,
@@ -125,11 +119,10 @@ fun BottomNavigationBarItem(
 
         Spacer(modifier = Modifier.height(3.dp))
 
-        Divider(
-            color = if (isActive) MaterialTheme.colors.primaryTextColor else Color.Transparent,
+        HorizontalDivider(
+            color = if (isActive) LocalTravelDiaryColors.current.primaryTextColor else Color.Transparent,
             modifier = Modifier
                 .height(1.dp)
-                //.padding(horizontal = 5.dp)
         )
     }
 }

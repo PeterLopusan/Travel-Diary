@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
@@ -28,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,39 +42,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.enums.MainScreenEnums
-import com.peterlopusan.traveldiary.data.enums.SortTypeEnum
-import com.peterlopusan.traveldiary.data.models.flight.CompletedFlight
-import com.peterlopusan.traveldiary.data.models.place.VisitedPlace
+import com.peterlopusan.traveldiary.enums.MainScreenEnums
+import com.peterlopusan.traveldiary.models.place.VisitedPlace
 import com.peterlopusan.traveldiary.sharedPreferences.SharedPreferencesManager
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomCheckbox
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
-import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.SortAlertDialog
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.checkDates
-import com.peterlopusan.traveldiary.utils.editStrings
-import com.peterlopusan.traveldiary.utils.formatDate
 import com.peterlopusan.traveldiary.utils.getCalendarFromString
 import com.peterlopusan.traveldiary.utils.showDatePicker
-import com.peterlopusan.traveldiary.utils.showLogs
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
-fun PlacesScreen(showSortDialog: MutableState<Boolean>, showFilterSheet: MutableState<Boolean>) {
-    val visitedPlacesList: SnapshotStateList<VisitedPlace> = remember { mutableStateListOf() }
-    val filteredPlacesList: SnapshotStateList<VisitedPlace> = remember { mutableStateListOf() }
-    var showLoading by remember { mutableStateOf(true) }
+fun PlacesScreen(
+    visitedPlacesList: SnapshotStateList<VisitedPlace>,
+    filteredPlacesList: SnapshotStateList<VisitedPlace>,
+    showSortDialog: MutableState<Boolean>,
+    showFilterSheet: MutableState<Boolean>,
+    navController: NavController
+) {
+
     val viewModel = MainActivity.placeViewModel
     val sharedPref = SharedPreferencesManager()
 
@@ -88,20 +79,7 @@ fun PlacesScreen(showSortDialog: MutableState<Boolean>, showFilterSheet: Mutable
     val isCityChecked = remember { mutableStateOf(sharedPref.getIfPlaceCityIsChecked(true)) }
     val isPlaceChecked = remember { mutableStateOf(sharedPref.getIfPlaceCityIsChecked(false)) }
 
-    LaunchedEffect(key1 = true) {
-        visitedPlacesList.addAll(viewModel.getVisitedPlaces())
-        filteredPlacesList.addAll(visitedPlacesList)
-        filterPlaceList(
-            filteredPlaceList = filteredPlacesList,
-            visitedPlacesList = visitedPlacesList,
-            dateFrom = dateFrom.value,
-            dateTo = dateTo.value,
-            isCityChecked = isCityChecked.value,
-            isPlaceChecked = isPlaceChecked.value,
-            searchText = searchText.value.trimEnd()
-        )
-        showLoading = false
-    }
+
 
     if (showSortDialog.value) {
         SortAlertDialog(
@@ -110,7 +88,7 @@ fun PlacesScreen(showSortDialog: MutableState<Boolean>, showFilterSheet: Mutable
             showName = true,
             closeClick = { showSortDialog.value = false },
             sortChanged = {
-                sortPlaceList(visitedPlacesList)
+                viewModel.sortPlaceList(filteredPlacesList)
             }
         )
     }
@@ -128,55 +106,49 @@ fun PlacesScreen(showSortDialog: MutableState<Boolean>, showFilterSheet: Mutable
         )
     }
 
-    Box {
-        if (showLoading) {
-            LoadingIndicator(showLoading = true)
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.primaryBackground)
-                    .padding(horizontal = 20.dp)
-                    .padding(vertical = 10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(id = R.string.places_screen_visited_places_plural, filteredPlacesList.size),
-                    color = MaterialTheme.colors.primaryTextColor,
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        fontFamily = fonts
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LocalTravelDiaryColors.current.primaryBackground)
+            .padding(horizontal = 20.dp)
+            .padding(vertical = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(id = R.string.places_screen_visited_places_plural, filteredPlacesList.size),
+            color = LocalTravelDiaryColors.current.primaryTextColor,
+            style = TextStyle(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = fonts
+            )
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        LazyColumn {
+            itemsIndexed(filteredPlacesList) { _, visitedPlace ->
+                if (visitedPlace.visitedCity != null) {
+                    VisitedCityItem(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.visitedPlace = visitedPlace
+                                navController.navigate(TravelDiaryRoutes.VisitedPlaceDetailScreen.name)
+                            },
+                        visitedPlace = visitedPlace
                     )
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                LazyColumn {
-                    itemsIndexed(filteredPlacesList) { _, visitedPlace ->
-                        if (visitedPlace.visitedCity != null) {
-                            VisitedCityItem(
-                                modifier = Modifier
-                                    .clickable {
-                                        viewModel.visitedPlace = visitedPlace
-                                        MainActivity.navController.navigate(TravelDiaryRoutes.VisitedPlaceDetailScreen.name)
-                                    },
-                                visitedPlace = visitedPlace
-                            )
-                        } else if (visitedPlace.visitedPlace != null) {
-                            VisitedPlaceItem(
-                                modifier = Modifier
-                                    .clickable {
-                                        viewModel.visitedPlace = visitedPlace
-                                        MainActivity.navController.navigate(TravelDiaryRoutes.VisitedPlaceDetailScreen.name)
-                                    },
-                                visitedPlace = visitedPlace
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-                    }
+                } else if (visitedPlace.visitedPlace != null) {
+                    VisitedPlaceItem(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.visitedPlace = visitedPlace
+                                navController.navigate(TravelDiaryRoutes.VisitedPlaceDetailScreen.name)
+                            },
+                        visitedPlace = visitedPlace
+                    )
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -197,7 +169,7 @@ fun VisitedCityItem(
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .padding(10.dp),
         horizontalArrangement = Arrangement.Start
     ) {
@@ -231,7 +203,7 @@ fun VisitedCityItem(
         Column {
             Text(
                 text = visitedPlace.visitedCity?.name ?: "",
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -242,7 +214,7 @@ fun VisitedCityItem(
 
             Text(
                 text = stringResource(id = R.string.places_screen_country, countryName),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -252,7 +224,7 @@ fun VisitedCityItem(
 
             Text(
                 text = stringResource(id = R.string.places_screen_last_visit_date, visitedPlace.lastVisitDate ?: ""),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -279,7 +251,7 @@ fun VisitedPlaceItem(
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .padding(10.dp),
         horizontalArrangement = Arrangement.Start
     ) {
@@ -313,7 +285,7 @@ fun VisitedPlaceItem(
         Column {
             Text(
                 text = visitedPlace.visitedPlace?.name ?: "",
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -324,7 +296,7 @@ fun VisitedPlaceItem(
 
             Text(
                 text = stringResource(id = R.string.places_screen_country, countryName),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -334,7 +306,7 @@ fun VisitedPlaceItem(
 
             Text(
                 text = stringResource(id = R.string.places_screen_last_visit_date, visitedPlace.lastVisitDate ?: ""),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -359,9 +331,10 @@ private fun PlaceFilterSheet(
 ) {
     val sheetState = rememberModalBottomSheetState()
     val sharedPref = SharedPreferencesManager()
+    val viewModel = MainActivity.placeViewModel
 
     ModalBottomSheet(
-        containerColor = MaterialTheme.colors.secondaryBackground,
+        containerColor = LocalTravelDiaryColors.current.secondaryBackground,
         onDismissRequest = {
             showFilterSheet.value = false
         },
@@ -376,21 +349,16 @@ private fun PlaceFilterSheet(
             CustomTextField(
                 hint = stringResource(id = R.string.search),
                 text = searchText.value,
-                borderColor = MaterialTheme.colors.secondaryTextColor,
+                borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                 onValueChange = {
                     searchText.value = it
                     sharedPref.setPlaceSearch(it)
-                    filterPlaceList(
+                    viewModel.filterPlaceList(
                         filteredPlaceList = filteredVisitedPlacesList,
-                        visitedPlacesList = visitedPlacesList,
-                        searchText = searchText.value,
-                        dateFrom = dateFrom.value,
-                        dateTo = dateTo.value,
-                        isCityChecked = isCityChecked.value,
-                        isPlaceChecked = isPlaceChecked.value
+                        visitedPlacesList = visitedPlacesList
                     )
                 },
-                startIcon = R.drawable.search_icon,
+                icon = R.drawable.search_icon,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -398,13 +366,13 @@ private fun PlaceFilterSheet(
             HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
-                    .background(MaterialTheme.colors.primaryTextColor)
+                    .background(LocalTravelDiaryColors.current.primaryTextColor)
             )
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
                 text = stringResource(id = R.string.places_screen_filter_date),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -418,23 +386,18 @@ private fun PlaceFilterSheet(
                 CustomTextField(
                     hint = stringResource(id = R.string.places_screen_filter_from),
                     text = dateFrom.value,
-                    borderColor = MaterialTheme.colors.secondaryTextColor,
+                    borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                     onValueChange = {},
-                    startIcon = R.drawable.date_icon,
+                    icon = R.drawable.date_icon,
                     modifier = Modifier.weight(1f),
                     clickAction = {
                         showDatePicker(getCalendarFromString(dateFrom.value)) { day, month, year ->
                             dateFrom.value = "${day}.${month}.${year}"
                             checkDates(from = true, dateFrom = dateFrom, dateTo = dateTo)
                             sharedPref.setPlaceDate(dateFrom.value, true)
-                            filterPlaceList(
+                            viewModel.filterPlaceList(
                                 filteredPlaceList = filteredVisitedPlacesList,
-                                visitedPlacesList = visitedPlacesList,
-                                searchText = searchText.value,
-                                dateFrom = dateFrom.value,
-                                dateTo = dateTo.value,
-                                isCityChecked = isCityChecked.value,
-                                isPlaceChecked = isPlaceChecked.value
+                                visitedPlacesList = visitedPlacesList
                             )
                         }
                     }
@@ -445,23 +408,18 @@ private fun PlaceFilterSheet(
                 CustomTextField(
                     hint = stringResource(id = R.string.places_screen_filter_to),
                     text = dateTo.value,
-                    borderColor = MaterialTheme.colors.secondaryTextColor,
+                    borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                     onValueChange = {},
-                    startIcon = R.drawable.date_icon,
+                    icon = R.drawable.date_icon,
                     modifier = Modifier.weight(1f),
                     clickAction = {
                         showDatePicker(getCalendarFromString(dateTo.value)) { day, month, year ->
                             dateTo.value = "${day}.${month}.${year}"
                             checkDates(from = false, dateFrom = dateFrom, dateTo = dateTo)
                             sharedPref.setPlaceDate(dateFrom.value, false)
-                            filterPlaceList(
+                            viewModel.filterPlaceList(
                                 filteredPlaceList = filteredVisitedPlacesList,
-                                visitedPlacesList = visitedPlacesList,
-                                searchText = searchText.value,
-                                dateFrom = dateFrom.value,
-                                dateTo = dateTo.value,
-                                isCityChecked = isCityChecked.value,
-                                isPlaceChecked = isPlaceChecked.value
+                                visitedPlacesList = visitedPlacesList
                             )
                         }
                     }
@@ -472,7 +430,7 @@ private fun PlaceFilterSheet(
             HorizontalDivider(
                 modifier = Modifier
                     .height(1.dp)
-                    .background(MaterialTheme.colors.primaryTextColor)
+                    .background(LocalTravelDiaryColors.current.primaryTextColor)
             )
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -483,14 +441,9 @@ private fun PlaceFilterSheet(
                 onCheckedChange = { isChecked ->
                     isCityChecked.value = isChecked
                     sharedPref.setIfPlaceCityIsChecked(isChecked = isChecked, city = true)
-                    filterPlaceList(
+                    viewModel.filterPlaceList(
                         filteredPlaceList = filteredVisitedPlacesList,
-                        visitedPlacesList = visitedPlacesList,
-                        searchText = searchText.value,
-                        dateFrom = dateFrom.value,
-                        dateTo = dateTo.value,
-                        isCityChecked = isCityChecked.value,
-                        isPlaceChecked = isPlaceChecked.value
+                        visitedPlacesList = visitedPlacesList
                     )
                 }
             )
@@ -501,14 +454,9 @@ private fun PlaceFilterSheet(
                 onCheckedChange = { isChecked ->
                     isPlaceChecked.value = isChecked
                     sharedPref.setIfPlaceCityIsChecked(isChecked = isChecked, city = false)
-                    filterPlaceList(
+                    viewModel.filterPlaceList(
                         filteredPlaceList = filteredVisitedPlacesList,
-                        visitedPlacesList = visitedPlacesList,
-                        searchText = searchText.value,
-                        dateFrom = dateFrom.value,
-                        dateTo = dateTo.value,
-                        isCityChecked = isCityChecked.value,
-                        isPlaceChecked = isPlaceChecked.value
+                        visitedPlacesList = visitedPlacesList
                     )
                 }
             )
@@ -527,82 +475,10 @@ private fun PlaceFilterSheet(
                     isPlaceChecked.value = true
                     filteredVisitedPlacesList.clear()
                     filteredVisitedPlacesList.addAll(visitedPlacesList)
-                    sortPlaceList(filteredVisitedPlacesList)
+                    viewModel.sortPlaceList(filteredVisitedPlacesList)
                 }
             )
         }
     }
 }
 
-private fun filterPlaceList(
-    filteredPlaceList: SnapshotStateList<VisitedPlace>,
-    visitedPlacesList: SnapshotStateList<VisitedPlace>,
-    searchText: String,
-    dateFrom: String,
-    dateTo: String,
-    isCityChecked: Boolean,
-    isPlaceChecked: Boolean
-) {
-    val format = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-    var list = mutableListOf<VisitedPlace>()
-    list.addAll(visitedPlacesList)
-
-    if (searchText.isNotBlank()) {
-        list = list.filter {
-            it.visitedCity?.name?.contains(searchText) == true ||
-            it.visitedPlace?.name?.contains(searchText) == true
-        }.toMutableList()
-    }
-
-    if (dateFrom.isNotBlank()) {
-        val date = LocalDate.parse(dateFrom, format)
-        list = list.filter { LocalDate.parse(it.lastVisitDate, format).isAfter(date) || LocalDate.parse(it.lastVisitDate, format) == date }.toMutableList()
-    }
-
-    if (dateTo.isNotBlank()) {
-        val date = LocalDate.parse(dateTo, format)
-        list = list.filter { LocalDate.parse(it.lastVisitDate, format).isBefore(date) || LocalDate.parse(it.lastVisitDate, format) == date }.toMutableList()
-    }
-
-    if (!isCityChecked) {
-        list = list.filter { it.visitedCity == null }.toMutableList()
-    }
-
-    if (!isPlaceChecked) {
-        list = list.filter { it.visitedPlace == null }.toMutableList()
-    }
-
-
-    filteredPlaceList.clear()
-    filteredPlaceList.addAll(list)
-    sortPlaceList(filteredPlaceList)
-}
-
-private fun sortPlaceList(list: SnapshotStateList<VisitedPlace>) {
-    val temporaryList = mutableListOf<VisitedPlace>()
-    temporaryList.addAll(list)
-
-    when (SharedPreferencesManager().getPlaceSortPreference()) {
-        SortTypeEnum.DATE_OLDEST_FIRST -> {
-            temporaryList.sortBy { formatDate(it.lastVisitDate, "dd.MM.yyyy") }
-        }
-
-        SortTypeEnum.DATE_NEWEST_FIRST -> {
-            temporaryList.sortBy { formatDate(it.lastVisitDate, "dd.MM.yyyy") }
-            temporaryList.reverse()
-        }
-
-        SortTypeEnum.NAME_ABC -> {
-            temporaryList.sortBy { editStrings(it.visitedCity?.name ?: it.visitedPlace?.name) }
-        }
-
-        SortTypeEnum.NAME_ZYX -> {
-            temporaryList.sortBy { editStrings(it.visitedCity?.name ?: it.visitedPlace?.name) }
-            temporaryList.reverse()
-        }
-
-        else -> {}
-    }
-    list.clear()
-    list.addAll(temporaryList)
-}

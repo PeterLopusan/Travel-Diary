@@ -2,8 +2,9 @@ package com.peterlopusan.traveldiary.sharedPreferences
 
 import android.content.Context
 import com.peterlopusan.traveldiary.MainActivity
-import com.peterlopusan.traveldiary.data.enums.ContinentsEnum
-import com.peterlopusan.traveldiary.data.enums.SortTypeEnum
+import com.peterlopusan.traveldiary.enums.ContinentsEnum
+import com.peterlopusan.traveldiary.enums.MapTypeEnum
+import com.peterlopusan.traveldiary.enums.SortTypeEnum
 
 
 class SharedPreferencesManager {
@@ -15,7 +16,7 @@ class SharedPreferencesManager {
         setFlightSortPreference(SortTypeEnum.DATE_NEWEST_FIRST)
         setPlaceSortPreference(SortTypeEnum.DATE_NEWEST_FIRST)
         setCountrySortPreference(SortTypeEnum.DATE_NEWEST_FIRST)
-
+        setMapTypePreference(MapTypeEnum.COUNTRY_MAP)
         resetFlightFilter()
         resetCountryFilter()
         resetPlaceFilter()
@@ -23,6 +24,7 @@ class SharedPreferencesManager {
 
 
     fun setDisplayMode(setDarkMode: String?) {
+        //not implemented yet
         sharedPref.edit().putString(displayModeKey, setDarkMode).apply()
     }
 
@@ -76,6 +78,18 @@ class SharedPreferencesManager {
             SortTypeEnum.NAME_ABC.name -> SortTypeEnum.NAME_ABC
             SortTypeEnum.NAME_ZYX.name -> SortTypeEnum.NAME_ZYX
             else -> SortTypeEnum.DATE_NEWEST_FIRST
+        }
+    }
+
+    fun setMapTypePreference(mapType: MapTypeEnum) {
+        sharedPref.edit().putString(mapTypeKey, mapType.name).apply()
+    }
+
+    fun getMapTypePreference(): MapTypeEnum {
+        return when (sharedPref.getString(mapTypeKey, "")) {
+            MapTypeEnum.FLIGHT_MAP.name -> MapTypeEnum.FLIGHT_MAP
+            MapTypeEnum.PLACE_MAP.name -> MapTypeEnum.PLACE_MAP
+            else -> MapTypeEnum.COUNTRY_MAP
         }
     }
 

@@ -11,10 +11,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-@SuppressLint("SimpleDateFormat")
-fun formatDate(date: Date, format: String): String {
-    val sdf = SimpleDateFormat(format)
-    return sdf.format(date)
+fun getDate(): String {
+    return android.text.format.DateFormat.getDateFormat(MainActivity.instance).format(System.currentTimeMillis())
 }
 
 @SuppressLint("SimpleDateFormat")
@@ -24,16 +22,6 @@ fun formatDate(date: String?, format: String): Date {
         formatter.parse(date!!)!!
     } catch (e: Exception) {
         Date()
-    }
-}
-
-@SuppressLint("SimpleDateFormat")
-fun formatDate(millis: Long, format: String): String {
-    return try {
-        val sdf = SimpleDateFormat(format)
-        sdf.format(Date(millis))
-    } catch (e: Exception) {
-        ""
     }
 }
 

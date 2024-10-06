@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,11 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.R
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.openMap
 
 
@@ -47,7 +42,7 @@ fun InfoCard(
         modifier = modifier
             .fillMaxWidth()
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .padding(15.dp)
     ) {
         if (drawableImage != null) {
@@ -63,7 +58,7 @@ fun InfoCard(
                 modifier = Modifier
                     .size(35.dp)
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(6.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .align(Alignment.CenterVertically)
             ) {
                 AsyncImage(
@@ -81,7 +76,7 @@ fun InfoCard(
         Column {
             Text(
                 text = title,
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -91,7 +86,7 @@ fun InfoCard(
 
             Text(
                 text = text,
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Normal,

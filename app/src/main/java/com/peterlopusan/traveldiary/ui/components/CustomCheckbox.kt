@@ -2,7 +2,6 @@ package com.peterlopusan.traveldiary.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -13,9 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
 
 @Composable
 fun CustomCheckbox(
@@ -24,7 +22,6 @@ fun CustomCheckbox(
     isChecked: MutableState<Boolean>,
     onCheckedChange: (Boolean) -> Unit
 ) {
-
 
     Row(
         modifier = modifier,
@@ -37,9 +34,9 @@ fun CustomCheckbox(
                 onCheckedChange(it)
             },
             colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colors.primaryTextColor,
-                uncheckedColor = MaterialTheme.colors.primaryTextColor,
-                checkmarkColor = MaterialTheme.colors.primaryBackground
+                checkedColor = LocalTravelDiaryColors.current.primaryTextColor,
+                uncheckedColor = LocalTravelDiaryColors.current.primaryTextColor,
+                checkmarkColor = LocalTravelDiaryColors.current.primaryBackground
             )
         )
 
@@ -50,7 +47,7 @@ fun CustomCheckbox(
                 fontFamily = fonts,
                 fontWeight = if (isChecked.value) FontWeight.SemiBold else FontWeight.Normal
             ),
-            color = MaterialTheme.colors.primaryTextColor,
+            color = LocalTravelDiaryColors.current.primaryTextColor,
             modifier = Modifier.clickable {
                 isChecked.value = !isChecked.value
                 onCheckedChange(isChecked.value)

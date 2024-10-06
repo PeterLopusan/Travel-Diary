@@ -6,12 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import com.peterlopusan.traveldiary.MainActivity
 
-fun showToast(text: String) {
-    Toast.makeText(MainActivity.instance, text, Toast.LENGTH_SHORT).show()
+fun showToast(text: String?) {
+    Toast.makeText(MainActivity.instance, text ?: "", Toast.LENGTH_SHORT).show()
 }
 
 fun showLogs(text: Any?) {
-    Log.d("TAG", text.toString())
+    Log.d("LOG_TAG", text.toString())
 }
 
 fun formatNumberWithSpaces(number: Long?): String {
@@ -67,7 +67,7 @@ fun openMap(latitude: Double, longitude: Double, zoomLevel: Int) {
     MainActivity.instance.startActivity(intent)
 }
 
-fun editStrings(string: String?): String {
+fun normalizeAndLowercase(string: String?): String {
     val allChar = mapOf(
         'á' to 'a', 'č' to 'c', 'ď' to 'd', 'é' to 'e', 'í' to 'i',
         'ľ' to 'l', 'ĺ' to 'l', 'ň' to 'n', 'ó' to 'o', 'ô' to 'o',
@@ -81,3 +81,4 @@ fun editStrings(string: String?): String {
     val editedString = string?.map { allChar.getOrDefault(it, it) }?.joinToString("")
     return editedString?.lowercase() ?: ""
 }
+

@@ -163,7 +163,7 @@
     <string name="countries_screen_last_visit_date">Last visit date: %1$s</string>
     <string name="countries_screen_visited_places">Visited places: %1$s</string>
     <string name="countries_screen_continent">Continent: %1$s</string>
-    <string name="countries_screen_filter_continent">Continent</string>
+    <string name="countries_screen_filter_continent">Continents</string>
     <string name="countries_screen_filter_reset">Reset</string>
 
 
@@ -185,7 +185,7 @@
     <string name="select_country_subregion">Subregion: %1$s</string>
     <string name="select_country_capital">Capital: %1$s</string>
     <string name="select_country_population">Population: %1$s</string>
-    <string name="select_country_filter_continent">Continent</string>
+    <string name="select_country_filter_continent">Continents</string>
     <string name="select_country_filter_all">All</string>
 
 
@@ -209,6 +209,12 @@
     <string name="visited_country_detail_screen_currency">Currency</string>
     <string name="visited_country_detail_screen_call_number">Call number</string>
 
+
+    <!-- Map screen -->
+    <string name="map_screen_map_type">Type of map</string>
+    <string name="map_screen_flight_map">Airports</string>
+    <string name="map_screen_place_map">Places</string>
+    <string name="map_screen_country_map">Countries</string>
 
 
     <!--Settings screen -->

@@ -1,5 +1,6 @@
 package com.peterlopusan.traveldiary.ui.screens.countries
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -28,23 +28,24 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.google.gson.GsonBuilder
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.country.VisitedCountry
+import com.peterlopusan.traveldiary.models.country.VisitedCountry
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CountrySelector
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.utils.getCalendarFromString
 import com.peterlopusan.traveldiary.utils.showDatePicker
 import com.peterlopusan.traveldiary.utils.showToast
 
 @Composable
-fun AddOrEditCountryScreen() {
+fun AddOrEditCountryScreen(navController: NavController) {
     val viewModel = MainActivity.countryViewModel
     val selectedCountry by remember { mutableStateOf(viewModel.selectedCountry) }
     var lastVisitDate by remember { mutableStateOf(viewModel.visitedCountry?.lastVisitDate ?: "") }
@@ -71,10 +72,11 @@ fun AddOrEditCountryScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = if (edit) R.string.add_country_screen_toolbar_edit_title else R.string.add_country_screen_toolbar_add_title),
             showBackButton = true
         )
@@ -82,7 +84,7 @@ fun AddOrEditCountryScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -91,7 +93,7 @@ fun AddOrEditCountryScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -117,7 +119,7 @@ fun AddOrEditCountryScreen() {
                         modifier = Modifier
                             .clickable {
                                 resetValues = false
-                                MainActivity.navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
+                                navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
                             }
                     )
 
@@ -134,7 +136,7 @@ fun AddOrEditCountryScreen() {
                             viewModel.visitedCountry?.lastVisitDate = lastVisitDate
                         }
                     },
-                    startIcon = R.drawable.date_icon,
+                    icon = R.drawable.date_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -147,7 +149,7 @@ fun AddOrEditCountryScreen() {
                         visitedPlaces = it
                         viewModel.visitedCountry?.visitedPlaces = it
                     },
-                    startIcon = R.drawable.places_icon,
+                    icon = R.drawable.places_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -159,12 +161,13 @@ fun AddOrEditCountryScreen() {
                     clickAction = {
                         if (viewModel.selectedCountry != null && lastVisitDate.isNotBlank()) {
                             showLoading = true
+                            Log.d("hackerman", GsonBuilder().create().toJson(selectedCountry))
                             viewModel.createOrEditCountryVisit().observe(MainActivity.instance) {
                                 if (it == true) {
                                     if (edit) {
                                         resetValues = false
                                     }
-                                    MainActivity.navController.popBackStack()
+                                    navController.popBackStack()
                                 }
                                 showLoading = false
                             }

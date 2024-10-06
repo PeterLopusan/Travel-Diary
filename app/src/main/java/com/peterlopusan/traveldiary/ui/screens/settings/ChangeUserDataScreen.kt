@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +27,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
@@ -35,12 +35,11 @@ import com.peterlopusan.traveldiary.ui.components.CountrySelector
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.Toolbar
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.utils.showToast
 
 @Composable
-fun ChangeUserDataScreen() {
+fun ChangeUserDataScreen(navController: NavController) {
     val authViewModel = MainActivity.authViewModel
     val countryViewModel = MainActivity.countryViewModel
     val userInfo = authViewModel.userInfo
@@ -69,10 +68,11 @@ fun ChangeUserDataScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.change_user_data_screen_toolbar_title),
             showBackButton = true
         )
@@ -80,14 +80,14 @@ fun ChangeUserDataScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -110,7 +110,7 @@ fun ChangeUserDataScreen() {
                     onValueChange = {
                         firstname = it
                     },
-                    startIcon = R.drawable.person_icon,
+                    icon = R.drawable.person_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -122,7 +122,7 @@ fun ChangeUserDataScreen() {
                     onValueChange = {
                         lastname = it
                     },
-                    startIcon = R.drawable.person_icon,
+                    icon = R.drawable.person_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -138,7 +138,7 @@ fun ChangeUserDataScreen() {
                             resetValues = false
                             countryViewModel.countryCodesForFiltering.clear()
                             selectedCountry?.shortname2?.let { countryViewModel.countryCodesForFiltering.add(it) }
-                            MainActivity.navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
+                            navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
                         }
                 )
 

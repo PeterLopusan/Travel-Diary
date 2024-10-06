@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -32,24 +31,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.country.Country
-import com.peterlopusan.traveldiary.data.models.flight.Airport
-import com.peterlopusan.traveldiary.data.models.flight.CompletedFlight
+import com.peterlopusan.traveldiary.models.country.Country
+import com.peterlopusan.traveldiary.models.flight.Airport
+import com.peterlopusan.traveldiary.models.flight.CompletedFlight
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.ConfirmAlertDialog
 import com.peterlopusan.traveldiary.ui.components.InfoCard
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
 import com.peterlopusan.traveldiary.utils.openMap
 
 @Composable
-fun CompletedFlightDetailScreen() {
+fun CompletedFlightDetailScreen(navController: NavController) {
     val viewModel = MainActivity.flightViewModel
     val completedFlight = viewModel.completedFlight1
     var resetValues by remember { mutableStateOf(true) }
@@ -76,7 +74,7 @@ fun CompletedFlightDetailScreen() {
                 showAlert = !showAlert
                 viewModel.deleteFlight().observe(MainActivity.instance) {
                     if (it == true) {
-                        MainActivity.navController.popBackStack()
+                        navController.popBackStack()
                     }
 
                     showLoading = false
@@ -92,16 +90,17 @@ fun CompletedFlightDetailScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
 
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.completed_flight_detail_screen_toolbar_title),
             showBackButton = true,
             editButtonClick = {
                 resetValues = false
-                MainActivity.navController.navigate(TravelDiaryRoutes.AddOrEditFlightScreen.name)
+                navController.navigate(TravelDiaryRoutes.AddOrEditFlightScreen.name)
             },
             deleteButtonClick = {
                 showAlert = !showAlert
@@ -111,7 +110,7 @@ fun CompletedFlightDetailScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -119,7 +118,7 @@ fun CompletedFlightDetailScreen() {
 
             Text(
                 text = stringResource(id = R.string.completed_flight_detail_screen_about_your_flight),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -133,7 +132,7 @@ fun CompletedFlightDetailScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .padding(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -174,7 +173,7 @@ fun CompletedFlightDetailScreen() {
 
             Text(
                 text = stringResource(id = R.string.completed_flight_detail_screen_about_airports),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -210,7 +209,7 @@ fun AirportInfoCard(airport: Airport?, departure: Boolean) {
     Column(
         modifier = Modifier
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .fillMaxWidth()
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally

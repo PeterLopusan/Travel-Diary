@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,21 +33,22 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
+import com.peterlopusan.traveldiary.sharedPreferences.SharedPreferencesManager
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.TravelDiaryTheme
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
+import java.util.Locale
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showLoading by remember { mutableStateOf(false) }
@@ -56,13 +56,13 @@ fun LoginScreen() {
 
     Box(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .padding(35.dp)
     ) {
         Column(
             modifier = Modifier
                 .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colors.secondaryBackground)
+                .background(LocalTravelDiaryColors.current.secondaryBackground)
                 .fillMaxWidth()
                 .align(Alignment.Center)
                 .padding(15.dp),
@@ -75,15 +75,13 @@ fun LoginScreen() {
                     contentDescription = null,
                     modifier = Modifier
                         .size(50.dp)
-                        .padding(end = 10.dp),
-
-
+                        .padding(end = 10.dp)
                 )
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    color = MaterialTheme.colors.primaryTextColor,
+                    color = LocalTravelDiaryColors.current.primaryTextColor,
                     style = TextStyle(
-                        fontSize = 40.sp,
+                        fontSize = if (SharedPreferencesManager().getLanguage() == "SK" || Locale.getDefault().language == "sk") 28.sp else 40.sp,
                         fontWeight = FontWeight.SemiBold,
                         fontFamily = fonts
                     )
@@ -98,7 +96,7 @@ fun LoginScreen() {
                 onValueChange = {
                     email = it
                 },
-                startIcon = R.drawable.email_icon,
+                icon = R.drawable.email_icon,
                 modifier = Modifier.fillMaxWidth(),
                 inputType = KeyboardType.Email
             )
@@ -111,7 +109,7 @@ fun LoginScreen() {
                 onValueChange = {
                     password = it
                 },
-                startIcon = R.drawable.password_icon,
+                icon = R.drawable.password_icon,
                 passwordInput = true,
                 modifier = Modifier.fillMaxWidth(),
                 inputType = KeyboardType.Password
@@ -122,7 +120,7 @@ fun LoginScreen() {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(id = R.string.login_screen_create_account),
-                    color = MaterialTheme.colors.secondaryTextColor,
+                    color = LocalTravelDiaryColors.current.secondaryTextColor,
                     style = TextStyle(
                         fontWeight = FontWeight.Normal,
                         fontFamily = fonts,
@@ -130,7 +128,7 @@ fun LoginScreen() {
                     ),
                     modifier = Modifier
                         .clickable {
-                            MainActivity.navController.navigate(TravelDiaryRoutes.CreateAccount.name)
+                            navController.navigate(TravelDiaryRoutes.CreateAccount.name)
                         }
                 )
 
@@ -138,7 +136,7 @@ fun LoginScreen() {
 
                 Text(
                     text = stringResource(id = R.string.login_screen_forgotten_password),
-                    color = MaterialTheme.colors.secondaryTextColor,
+                    color = LocalTravelDiaryColors.current.secondaryTextColor,
                     style = TextStyle(
                         fontWeight = FontWeight.Normal,
                         fontFamily = fonts,
@@ -146,7 +144,7 @@ fun LoginScreen() {
                     ),
                     modifier = Modifier
                         .clickable {
-                            MainActivity.navController.navigate(TravelDiaryRoutes.ForgottenPasswordScreen.name)
+                            navController.navigate(TravelDiaryRoutes.ForgottenPasswordScreen.name)
                         }
                 )
             }
@@ -161,7 +159,7 @@ fun LoginScreen() {
                         showLoading = true
                         MainActivity.authViewModel.login(email, password).observe(MainActivity.instance) {
                             if (it) {
-                                MainActivity.navController.navigate(TravelDiaryRoutes.MainScreen.name) {
+                                navController.navigate(TravelDiaryRoutes.MainScreen.name) {
                                     popUpTo(TravelDiaryRoutes.Login.name) { inclusive = true }
                                 }
                             }
@@ -183,7 +181,7 @@ fun LoginScreen() {
 fun LoginScreenPreview() {
     TravelDiaryTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            LoginScreen()
+            LoginScreen(navController = rememberNavController())
         }
     }
 }

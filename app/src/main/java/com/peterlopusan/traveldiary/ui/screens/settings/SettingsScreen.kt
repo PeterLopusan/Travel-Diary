@@ -1,7 +1,6 @@
 package com.peterlopusan.traveldiary.ui.screens.settings
 
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,10 +22,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.sharedPreferences.SharedPreferencesManager
@@ -37,13 +35,11 @@ import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.utils.showLogs
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import java.util.Locale
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavController) {
     val viewModel = MainActivity.authViewModel
     val sharedPref = SharedPreferencesManager()
     var showChangePasswordAlert by remember { mutableStateOf(false) }
@@ -97,7 +93,11 @@ fun SettingsScreen() {
             confirmClick = {
                 showLoading = true
                 showDeleteAccountAlert = !showDeleteAccountAlert
-                viewModel.deleteAccount()
+                viewModel.deleteAccount {
+                    navController.navigate(TravelDiaryRoutes.Login.name) {
+                        popUpTo(TravelDiaryRoutes.MainScreen.name) { inclusive = true }
+                    }
+                }
             },
             cancelClick = {
                 showDeleteAccountAlert = !showDeleteAccountAlert
@@ -109,10 +109,11 @@ fun SettingsScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.settings_screen_toolbar_title),
             showBackButton = true
         )
@@ -120,7 +121,7 @@ fun SettingsScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -128,7 +129,7 @@ fun SettingsScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -158,7 +159,7 @@ fun SettingsScreen() {
                         }
                         MainActivity.instance.restartActivity()
                     },
-                    startIcon = R.drawable.language_icon,
+                    icon = R.drawable.language_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -171,7 +172,7 @@ fun SettingsScreen() {
                     clickAction = {
                         //todo
                     },
-                    startIcon = if (darkDisplayMode) R.drawable.dark_mode_icon else R.drawable.light_mode_icon,
+                    icon = if (darkDisplayMode) R.drawable.dark_mode_icon else R.drawable.light_mode_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -182,7 +183,7 @@ fun SettingsScreen() {
                     text = stringResource(id = R.string.settings_screen_about_my_homeland_button),
                     iconId = R.drawable.location_icon,
                     clickAction = {
-                        MainActivity.navController.navigate(TravelDiaryRoutes.AboutMyHomelandScreen.name)
+                        navController.navigate(TravelDiaryRoutes.AboutMyHomelandScreen.name)
                     }
                 )
 
@@ -193,7 +194,7 @@ fun SettingsScreen() {
                     text = stringResource(id = R.string.settings_screen_change_user_data_button),
                     iconId = R.drawable.person_icon,
                     clickAction = {
-                        MainActivity.navController.navigate(TravelDiaryRoutes.ChangeUserDataScreen.name)
+                        navController.navigate(TravelDiaryRoutes.ChangeUserDataScreen.name)
                     }
                 )
 
@@ -228,7 +229,7 @@ fun SettingsScreen() {
                     clickAction = {
                         SharedPreferencesManager().resetAllPreferences()
                         MainActivity.authViewModel.logout()
-                        MainActivity.navController.navigate(TravelDiaryRoutes.Login.name) {
+                        navController.navigate(TravelDiaryRoutes.Login.name) {
                             popUpTo(TravelDiaryRoutes.MainScreen.name) { inclusive = true }
                         }
                     }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,28 +25,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.Toolbar
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.utils.showToast
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 
 
 @Composable
-fun ForgottenPasswordScreen() {
+fun ForgottenPasswordScreen(navController: NavController) {
     val viewModel = MainActivity.authViewModel
     var email by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.forgotten_password_screen_toolbar_title),
             showBackButton = true
         )
@@ -55,14 +53,14 @@ fun ForgottenPasswordScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -86,7 +84,7 @@ fun ForgottenPasswordScreen() {
                     onValueChange = {
                         email = it
                     },
-                    startIcon = R.drawable.person_icon,
+                    icon = R.drawable.email_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(25.dp))

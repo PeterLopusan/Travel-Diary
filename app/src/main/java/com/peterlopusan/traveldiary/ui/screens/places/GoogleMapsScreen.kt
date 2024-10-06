@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -39,12 +38,11 @@ import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.utils.showLogs
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import kotlinx.coroutines.launch
 
 @Composable
-fun GoogleMapsScreen() {
+fun GoogleMapsScreen(navController: NavController) {
     val viewModel = MainActivity.placeViewModel
     val properties by remember { mutableStateOf(MapProperties(mapType = MapType.HYBRID)) }
     val uiSettings by remember { mutableStateOf(MapUiSettings()) }
@@ -83,7 +81,7 @@ fun GoogleMapsScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Box(
@@ -131,7 +129,7 @@ fun GoogleMapsScreen() {
                             }
                         }
                     },
-                    startIcon = R.drawable.search_icon,
+                    icon = R.drawable.search_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -143,7 +141,7 @@ fun GoogleMapsScreen() {
                     clickAction = {
                         markerLatLng?.let {
                             viewModel.selectedLatLng = it
-                            MainActivity.navController.popBackStack()
+                            navController.popBackStack()
                         }
                     }
                 )
@@ -153,7 +151,7 @@ fun GoogleMapsScreen() {
         }
     }
 
-    LoadingIndicator(showLoading = showLoading, backgroundColor = MaterialTheme.colors.primaryBackground)
+    LoadingIndicator(showLoading = showLoading, backgroundColor = LocalTravelDiaryColors.current.primaryBackground)
 
 }
 

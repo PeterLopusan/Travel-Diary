@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Cestovateľský denník</string>
 
     <!-- Screens ↓ ↓ ↓ -->
@@ -163,7 +163,7 @@
     <string name="countries_screen_last_visit_date">Dátum poslednej návštevy: %1$s</string>
     <string name="countries_screen_visited_places">Navštívené miesta: %1$s</string>
     <string name="countries_screen_continent">Kontinent: %1$s</string>
-    <string name="countries_screen_filter_continent">Kontinent</string>
+    <string name="countries_screen_filter_continent">Kontinenty</string>
     <string name="countries_screen_filter_reset">Resetovať</string>
 
 
@@ -185,7 +185,7 @@
     <string name="select_country_subregion">Región: %1$s</string>
     <string name="select_country_capital">Hlavné mesto: %1$s</string>
     <string name="select_country_population">Počet obyvateľov: %1$s</string>
-    <string name="select_country_filter_continent">Kontinent</string>
+    <string name="select_country_filter_continent">Kontinenty</string>
     <string name="select_country_filter_all">Všetko</string>
 
 
@@ -209,6 +209,12 @@
     <string name="visited_country_detail_screen_currency">Mena</string>
     <string name="visited_country_detail_screen_call_number">Telefónna predvoľba</string>
 
+
+    <!-- Map screen -->
+    <string name="map_screen_map_type">Typ mapy</string>
+    <string name="map_screen_flight_map">Letiská</string>
+    <string name="map_screen_place_map">Miesta</string>
+    <string name="map_screen_country_map">Krajiny</string>
 
 
     <!--Settings screen -->
@@ -270,7 +276,7 @@
 
 
     <!-- Continents -->
-    <string name="north_america">Severná Amerikca</string>
+    <string name="north_america">Severná Amerika</string>
     <string name="south_america">Južná Amerika</string>
     <string name="africa">Afrika</string>
     <string name="antarctica">Antarktída</string>

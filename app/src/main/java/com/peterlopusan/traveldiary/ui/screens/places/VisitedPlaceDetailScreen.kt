@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -36,26 +35,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.country.Country
-import com.peterlopusan.traveldiary.data.models.place.City
-import com.peterlopusan.traveldiary.data.models.place.Place
+import com.peterlopusan.traveldiary.models.country.Country
+import com.peterlopusan.traveldiary.models.place.City
+import com.peterlopusan.traveldiary.models.place.Place
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.ConfirmAlertDialog
 import com.peterlopusan.traveldiary.ui.components.InfoCard
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
 import com.peterlopusan.traveldiary.utils.formatNumberWithSpaces
 import com.peterlopusan.traveldiary.utils.openMap
 
 @Composable
-fun VisitedPlaceDetailScreen() {
+fun VisitedPlaceDetailScreen(navController: NavController) {
     val viewModel = MainActivity.placeViewModel
     var resetValues by remember { mutableStateOf(true) }
     var showAlert by remember { mutableStateOf(false) }
@@ -78,7 +76,7 @@ fun VisitedPlaceDetailScreen() {
                 showAlert = !showAlert
                 viewModel.deleteVisit().observe(MainActivity.instance) {
                     if (it == true) {
-                        MainActivity.navController.popBackStack()
+                        navController.popBackStack()
                     }
                     showLoading = false
                 }
@@ -93,16 +91,17 @@ fun VisitedPlaceDetailScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
 
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.visited_place_detail_screen_toolbar_title),
             showBackButton = true,
             editButtonClick = {
                 resetValues = false
-                MainActivity.navController.navigate(TravelDiaryRoutes.AddOrEditPlaceScreen.name)
+                navController.navigate(TravelDiaryRoutes.AddOrEditPlaceScreen.name)
             },
             deleteButtonClick = {
                 showAlert = !showAlert
@@ -112,7 +111,7 @@ fun VisitedPlaceDetailScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -120,7 +119,7 @@ fun VisitedPlaceDetailScreen() {
 
             Text(
                 text = stringResource(id = R.string.visited_place_detail_screen_about_your_visit),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -134,7 +133,7 @@ fun VisitedPlaceDetailScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .padding(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -181,7 +180,7 @@ fun VisitedPlaceDetailScreen() {
 
             Text(
                 text = stringResource(id = if (viewModel.visitedPlace?.visitedCity != null) R.string.visited_place_detail_screen_about_city else R.string.visited_place_detail_screen_about_place),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -216,7 +215,7 @@ fun CityInfoCard(city: City) {
     Column(
         modifier = Modifier
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .fillMaxWidth()
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -274,7 +273,7 @@ fun PlaceInfoCard(place: Place) {
     Column(
         modifier = Modifier
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .fillMaxWidth()
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally

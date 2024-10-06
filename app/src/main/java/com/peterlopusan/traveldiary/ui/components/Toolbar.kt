@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.peterlopusan.traveldiary.MainActivity
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
 
 @Composable
 fun Toolbar(
     modifier: Modifier = Modifier,
+    navController: NavController,
     title: String,
     showSettingsButton: Boolean = false,
     showBackButton: Boolean = false,
@@ -38,17 +37,18 @@ fun Toolbar(
     filterButtonClick: (() -> Unit)? = null,
     sortButtonClick: (() -> Unit)? = null,
     editButtonClick: (() -> Unit)? = null,
-    deleteButtonClick: (() -> Unit)? = null
+    deleteButtonClick: (() -> Unit)? = null,
+    mapMarkerButtonClick: (() -> Unit)? = null
 ) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .shadow(elevation = 1.dp)
             .padding(vertical = 15.dp)
-            .padding(start = 25.dp)
+            .padding(start = 15.dp)
 
     ) {
         if (showBackButton) {
@@ -58,7 +58,7 @@ fun Toolbar(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        MainActivity.navController.popBackStack()
+                        navController.popBackStack()
                     }
             )
         } else {
@@ -74,7 +74,7 @@ fun Toolbar(
 
         Text(
             text = title,
-            color = MaterialTheme.colors.primaryTextColor,
+            color = LocalTravelDiaryColors.current.primaryTextColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = TextStyle(
@@ -124,6 +124,19 @@ fun Toolbar(
             Spacer(Modifier.width(15.dp))
         }
 
+        if (mapMarkerButtonClick != null) {
+            Image(
+                painterResource(R.drawable.map_marker_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        mapMarkerButtonClick()
+                    }
+            )
+            Spacer(Modifier.width(15.dp))
+        }
+
         if (showSettingsButton) {
             Image(
                 painterResource(R.drawable.settings_icon),
@@ -131,7 +144,7 @@ fun Toolbar(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        MainActivity.navController.navigate(TravelDiaryRoutes.SettingsScreen.name)
+                        navController.navigate(TravelDiaryRoutes.SettingsScreen.name)
                     }
             )
             Spacer(Modifier.width(15.dp))

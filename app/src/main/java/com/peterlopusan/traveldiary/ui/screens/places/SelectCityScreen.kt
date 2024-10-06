@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -44,26 +42,23 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.place.City
+import com.peterlopusan.traveldiary.models.place.City
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.openMap
-import com.peterlopusan.traveldiary.utils.showLogs
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectCityScreen() {
+fun SelectCityScreen(navController: NavController) {
     val viewModel = MainActivity.placeViewModel
     val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
@@ -100,10 +95,11 @@ fun SelectCityScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.select_city_screen_toolbar_title),
             showBackButton = true
         )
@@ -111,7 +107,7 @@ fun SelectCityScreen() {
         Box(
             modifier = Modifier
                 .weight(1f)
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
         ) {
             LazyColumn {
@@ -120,7 +116,7 @@ fun SelectCityScreen() {
                         modifier = Modifier
                             .clickable {
                                 viewModel.visitedPlace?.visitedCity = city
-                                MainActivity.navController.popBackStack()
+                                navController.popBackStack()
                             },
                         city = city
                     )
@@ -130,7 +126,7 @@ fun SelectCityScreen() {
         }
         if (showBottomSheet) {
             ModalBottomSheet(
-                containerColor = MaterialTheme.colors.secondaryBackground,
+                containerColor = LocalTravelDiaryColors.current.secondaryBackground,
                 onDismissRequest = {
                     showBottomSheet = false
                 },
@@ -140,7 +136,7 @@ fun SelectCityScreen() {
                     Modifier
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
-                        .background(MaterialTheme.colors.secondaryBackground)
+                        .background(LocalTravelDiaryColors.current.secondaryBackground)
                         .padding(15.dp)
 
                 ) {
@@ -148,9 +144,9 @@ fun SelectCityScreen() {
                     CustomTextField(
                         hint = stringResource(id = R.string.select_city_screen_search),
                         text = searchText,
-                        borderColor = MaterialTheme.colors.secondaryTextColor,
+                        borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                         onValueChange = { searchText = it },
-                        startIcon = R.drawable.search_icon,
+                        icon = R.drawable.search_icon,
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -160,14 +156,14 @@ fun SelectCityScreen() {
                         CustomTextField(
                             hint = stringResource(id = R.string.select_city_screen_latitude),
                             text = latitude,
-                            borderColor = MaterialTheme.colors.secondaryTextColor,
+                            borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                             onValueChange = {
 
                             },
-                            startIcon = R.drawable.navigate_to_map_icon,
+                            icon = R.drawable.navigate_to_map_icon,
                             modifier = Modifier.weight(1f),
                             clickAction = {
-                                MainActivity.navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
+                                navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
                             }
                         )
 
@@ -177,14 +173,14 @@ fun SelectCityScreen() {
                             inputType = KeyboardType.Number,
                             hint = stringResource(id = R.string.select_city_screen_longitude),
                             text = longitude,
-                            borderColor = MaterialTheme.colors.secondaryTextColor,
+                            borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                             onValueChange = {
 
                             },
-                            startIcon = R.drawable.navigate_to_map_icon,
+                            icon = R.drawable.navigate_to_map_icon,
                             modifier = Modifier.weight(1f),
                             clickAction = {
-                                MainActivity.navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
+                                navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
                             }
                         )
                     }
@@ -227,7 +223,7 @@ fun SelectCityScreen() {
                 Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .padding(15.dp)
 
             ) {
@@ -261,7 +257,7 @@ fun SelectCityItem(modifier: Modifier, city: City) {
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .padding(10.dp),
         horizontalArrangement = Arrangement.Start
     ) {
@@ -278,7 +274,7 @@ fun SelectCityItem(modifier: Modifier, city: City) {
         Column {
             Text(
                 text = city.name ?: "",
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -289,7 +285,7 @@ fun SelectCityItem(modifier: Modifier, city: City) {
 
             Text(
                 text = countryName,
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,

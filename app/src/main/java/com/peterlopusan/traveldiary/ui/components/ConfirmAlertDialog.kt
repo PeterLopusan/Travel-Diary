@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,10 +25,8 @@ import androidx.compose.ui.window.Dialog
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.theme.CancelColor
 import com.peterlopusan.traveldiary.ui.theme.ConfirmColor
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 
 @Composable
 fun ConfirmAlertDialog(
@@ -52,14 +49,14 @@ fun ConfirmAlertDialog(
             Column(
                 modifier = modifier
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .padding(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 Text(
                     text = dialogTitle,
-                    color = MaterialTheme.colors.primaryTextColor,
+                    color = LocalTravelDiaryColors.current.primaryTextColor,
                     style = TextStyle(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -72,7 +69,7 @@ fun ConfirmAlertDialog(
 
                 Text(
                     text = dialogText,
-                    color = MaterialTheme.colors.secondaryTextColor,
+                    color = LocalTravelDiaryColors.current.secondaryTextColor,
                     style = TextStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,

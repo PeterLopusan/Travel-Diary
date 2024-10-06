@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,12 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.enums.MainScreenEnums
-import com.peterlopusan.traveldiary.data.enums.SortTypeEnum
+import com.peterlopusan.traveldiary.enums.MainScreenEnums
+import com.peterlopusan.traveldiary.enums.SortTypeEnum
 import com.peterlopusan.traveldiary.sharedPreferences.SharedPreferencesManager
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
 
 @Composable
 fun SortAlertDialog(
@@ -70,13 +68,13 @@ fun SortAlertDialog(
             Column(
                 modifier = modifier
                     .clip(shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .padding(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(id = R.string.sort_alert_dialog_sort_by),
-                    color = MaterialTheme.colors.primaryTextColor,
+                    color = LocalTravelDiaryColors.current.primaryTextColor,
                     style = TextStyle(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.SemiBold,

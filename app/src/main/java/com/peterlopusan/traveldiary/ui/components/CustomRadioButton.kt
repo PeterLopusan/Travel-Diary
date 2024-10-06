@@ -5,24 +5,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
 
 @Composable
 fun CustomRadioButton(
@@ -40,8 +35,8 @@ fun CustomRadioButton(
         RadioButton(
             selected = isSelect.value,
             colors = RadioButtonDefaults.colors(
-                selectedColor = MaterialTheme.colors.primaryTextColor,
-                unselectedColor  = MaterialTheme.colors.primaryTextColor
+                selectedColor = LocalTravelDiaryColors.current.primaryTextColor,
+                unselectedColor  = LocalTravelDiaryColors.current.primaryTextColor
             ),
             onClick = {
                 if (!isSelect.value) {
@@ -60,7 +55,7 @@ fun CustomRadioButton(
                 fontFamily = fonts,
                 fontWeight = if (isSelect.value) FontWeight.SemiBold else FontWeight.Normal
             ),
-            color = MaterialTheme.colors.primaryTextColor,
+            color = LocalTravelDiaryColors.current.primaryTextColor,
             modifier = Modifier.clickable {
                 isSelect.value = !isSelect.value
                 clickAction()

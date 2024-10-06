@@ -2,16 +2,12 @@ package com.peterlopusan.traveldiary.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.exifinterface.media.ExifInterface
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils
 import com.peterlopusan.traveldiary.MainActivity
 import java.io.InputStream
-
-fun getDate(): String {
-    return android.text.format.DateFormat.getDateFormat(MainActivity.instance).format(System.currentTimeMillis())
-}
 
 fun getBitmapFromUri(uri: Uri): Bitmap? {
     return try {
@@ -23,7 +19,7 @@ fun getBitmapFromUri(uri: Uri): Bitmap? {
     }
 }
 
-fun getImageUri(image: Bitmap): Uri? {
+fun getUriFromBitmap(image: Bitmap): Uri? {
     val path = MediaStore.Images.Media.insertImage(MainActivity.instance.contentResolver, image, "TravelDiary" +" " + getDate(), null)
     return Uri.parse(path)
 }
@@ -45,7 +41,7 @@ fun getResizedBitmap(image: Bitmap): Bitmap {
     return Bitmap.createScaledBitmap(image, width, height, true)
 }
 
-fun rotateBitmap(bitmap: Bitmap, inputStream: InputStream): Bitmap {
+fun getRotatedBitmap(bitmap: Bitmap, inputStream: InputStream): Bitmap {
     val exitInterface = ExifInterface(inputStream)
     val rotatedBitmap = when (exitInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
         ExifInterface.ORIENTATION_ROTATE_90 -> TransformationUtils.rotateImage(bitmap, 90)

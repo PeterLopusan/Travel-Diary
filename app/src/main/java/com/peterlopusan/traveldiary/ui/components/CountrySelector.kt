@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,10 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.R
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 
 
 @Composable
@@ -34,7 +31,7 @@ fun CountrySelector (
     hint: String = "",
     text: String = "",
     flag: String? = null,
-    backgroundColor: Color = MaterialTheme.colors.primaryBackground,
+    backgroundColor: Color = LocalTravelDiaryColors.current.primaryBackground,
     onValueChange: (String) -> Unit
 ) {
 
@@ -81,18 +78,19 @@ fun CountrySelector (
             label = {
                 Text(
                     text = hint,
-                    color = MaterialTheme.colors.secondaryTextColor,
+                    color = LocalTravelDiaryColors.current.secondaryTextColor,
                     style = TextStyle(
                         fontWeight = FontWeight.Normal,
                         fontFamily = fonts
                     )
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
-                cursorColor = MaterialTheme.colors.primaryTextColor,
+            colors = TextFieldDefaults.colors(
+                cursorColor = LocalTravelDiaryColors.current.primaryTextColor,
                 focusedIndicatorColor = Color.Transparent,
-                backgroundColor = backgroundColor,
-                textColor = MaterialTheme.colors.primaryTextColor,
+                focusedContainerColor = backgroundColor,
+                unfocusedContainerColor = backgroundColor,
+                disabledContainerColor = backgroundColor,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -45,27 +44,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.place.City
-import com.peterlopusan.traveldiary.data.models.place.Place
-import com.peterlopusan.traveldiary.data.models.place.VisitedPlace
+import com.peterlopusan.traveldiary.models.place.City
+import com.peterlopusan.traveldiary.models.place.Place
+import com.peterlopusan.traveldiary.models.place.VisitedPlace
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.getCalendarFromString
 import com.peterlopusan.traveldiary.utils.showDatePicker
 import com.peterlopusan.traveldiary.utils.showToast
 
 @Composable
-fun AddOrEditPlaceScreen() {
+fun AddOrEditPlaceScreen(navController: NavController) {
     val viewModel = MainActivity.placeViewModel
     var cityOrPlaceSelected by remember { mutableStateOf(viewModel.visitedPlace != null) }
     var mainImageUri by remember { mutableStateOf((viewModel.visitedPlace?.imageUrl)?.toUri()) }
@@ -99,10 +97,11 @@ fun AddOrEditPlaceScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = if (edit) R.string.add_place_screen_toolbar_edit_title else R.string.add_place_screen_toolbar_add_title),
             showBackButton = true
         )
@@ -110,14 +109,14 @@ fun AddOrEditPlaceScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -136,11 +135,11 @@ fun AddOrEditPlaceScreen() {
 
                 if (cityOrPlaceSelected) {
                     if (viewModel.visitedPlace?.visitedCity != null) {
-                        CityInfoCard {
+                        CityInfoCard(navController = navController) {
                             resetValues = false
                         }
                     } else {
-                        PlaceInfoCard {
+                        PlaceInfoCard(navController = navController) {
                             resetValues = false
                         }
                     }
@@ -154,7 +153,7 @@ fun AddOrEditPlaceScreen() {
                             note = it
                             viewModel.visitedPlace?.note = it
                         },
-                        startIcon = R.drawable.note_icon,
+                        icon = R.drawable.note_icon,
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -170,7 +169,7 @@ fun AddOrEditPlaceScreen() {
                                 viewModel.visitedPlace?.lastVisitDate = lastVisitDate
                             }
                         },
-                        startIcon = R.drawable.date_icon,
+                        icon = R.drawable.date_icon,
                         modifier = Modifier.fillMaxWidth()
                     )
 
@@ -231,7 +230,7 @@ fun AddOrEditPlaceScreen() {
                                         if (edit) {
                                             resetValues = false
                                         }
-                                        MainActivity.navController.popBackStack()
+                                        navController.popBackStack()
                                     }
                                     showLoading = false
                                 }
@@ -260,7 +259,7 @@ fun WhatDoYouWantToAdd(selectAction: (Boolean) -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = stringResource(id = R.string.add_place_screen_do_you_want),
-            color = MaterialTheme.colors.secondaryTextColor,
+            color = LocalTravelDiaryColors.current.secondaryTextColor,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 fontFamily = fonts,
@@ -282,7 +281,7 @@ fun WhatDoYouWantToAdd(selectAction: (Boolean) -> Unit) {
 
         Text(
             text = stringResource(id = R.string.add_place_screen_or),
-            color = MaterialTheme.colors.secondaryTextColor,
+            color = LocalTravelDiaryColors.current.secondaryTextColor,
             style = TextStyle(
                 fontWeight = FontWeight.Normal,
                 fontFamily = fonts,
@@ -303,7 +302,7 @@ fun WhatDoYouWantToAdd(selectAction: (Boolean) -> Unit) {
 }
 
 @Composable
-fun CityInfoCard(moveToCitySelectAction: () -> Unit) {
+fun CityInfoCard(navController: NavController, moveToCitySelectAction: () -> Unit) {
     val viewModel = MainActivity.placeViewModel
     val visitedCityName by remember { mutableStateOf(viewModel.visitedPlace?.visitedCity?.name ?: "") }
     var cityPopulation by remember {
@@ -332,9 +331,9 @@ fun CityInfoCard(moveToCitySelectAction: () -> Unit) {
             onValueChange = {},
             clickAction = {
                 moveToCitySelectAction()
-                MainActivity.navController.navigate(TravelDiaryRoutes.SelectCityScreen.name)
+                navController.navigate(TravelDiaryRoutes.SelectCityScreen.name)
             },
-            startIcon = R.drawable.city_icon,
+            icon = R.drawable.city_icon,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -352,7 +351,7 @@ fun CityInfoCard(moveToCitySelectAction: () -> Unit) {
                     cityPopulation = it
                 }
             },
-            startIcon = R.drawable.population_icon,
+            icon = R.drawable.population_icon,
             modifier = Modifier.fillMaxWidth(),
             inputType = KeyboardType.Number
         )
@@ -364,14 +363,14 @@ fun CityInfoCard(moveToCitySelectAction: () -> Unit) {
             text = country,
             onValueChange = {},
             clickAction = {},
-            startIcon = R.drawable.countries_icon,
+            icon = R.drawable.countries_icon,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun PlaceInfoCard(moveToMapAction: () -> Unit) {
+fun PlaceInfoCard(navController: NavController, moveToMapAction: () -> Unit) {
     val viewModel = MainActivity.placeViewModel
     var visitedPlaceName by remember { mutableStateOf(viewModel.visitedPlace?.visitedPlace?.name ?: "") }
     var region by remember { mutableStateOf(viewModel.visitedPlace?.visitedPlace?.region ?: "") }
@@ -403,11 +402,11 @@ fun PlaceInfoCard(moveToMapAction: () -> Unit) {
             hint = stringResource(id = R.string.add_place_screen_place_latitude),
             text = latitude,
             onValueChange = {},
-            startIcon = R.drawable.navigate_to_map_icon,
+            icon = R.drawable.navigate_to_map_icon,
             modifier = Modifier.weight(1f),
             clickAction = {
                 moveToMapAction()
-                MainActivity.navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
+                navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
             }
         )
 
@@ -417,11 +416,11 @@ fun PlaceInfoCard(moveToMapAction: () -> Unit) {
             hint = stringResource(id = R.string.add_place_screen_place_longitude),
             text = longitude,
             onValueChange = {},
-            startIcon = R.drawable.navigate_to_map_icon,
+            icon = R.drawable.navigate_to_map_icon,
             modifier = Modifier.weight(1f),
             clickAction = {
                 moveToMapAction()
-                MainActivity.navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
+                navController.navigate(TravelDiaryRoutes.GoogleMapsScreen.name)
             }
         )
     }
@@ -435,7 +434,7 @@ fun PlaceInfoCard(moveToMapAction: () -> Unit) {
             visitedPlaceName = it
             viewModel.visitedPlace?.visitedPlace?.name = visitedPlaceName
         },
-        startIcon = R.drawable.places_icon,
+        icon = R.drawable.places_icon,
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -448,7 +447,7 @@ fun PlaceInfoCard(moveToMapAction: () -> Unit) {
             region = it
             viewModel.visitedPlace?.visitedPlace?.region = region
         },
-        startIcon = R.drawable.subregion_icon,
+        icon = R.drawable.subregion_icon,
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -461,7 +460,7 @@ fun PlaceInfoCard(moveToMapAction: () -> Unit) {
             countryName = it
             viewModel.visitedPlace?.visitedPlace?.country = it
         },
-        startIcon = R.drawable.countries_icon,
+        icon = R.drawable.countries_icon,
         modifier = Modifier.fillMaxWidth()
     )
 }

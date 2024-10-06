@@ -8,14 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,37 +26,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
-import com.peterlopusan.traveldiary.ui.theme.TravelDiaryTheme
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
-import com.peterlopusan.traveldiary.utils.showLogs
 
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
     hint: String,
     text: String = "",
-    backgroundColor: Color = MaterialTheme.colors.primaryBackground,
+    backgroundColor: Color = LocalTravelDiaryColors.current.primaryBackground,
     borderColor: Color = Color.Transparent,
-    startIcon: Int? = null,
+    icon: Int? = null,
     passwordInput: Boolean = false,
     inputType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit,
     clickAction: (() -> Unit)? = null
 ) {
     var passwordIsVisible by remember { mutableStateOf(!passwordInput) }
+    val focusManager = LocalFocusManager.current
 
     Row(
         modifier = modifier
@@ -71,7 +69,7 @@ fun CustomTextField(
             .padding(horizontal = 10.dp)
 
     ) {
-        startIcon?.let { imageId ->
+        icon?.let { imageId ->
             Image(
                 painterResource(imageId),
                 contentDescription = null,
@@ -111,28 +109,30 @@ fun CustomTextField(
             label = {
                 Text(
                     text = hint,
-                    color = MaterialTheme.colors.secondaryTextColor,
+                    color = LocalTravelDiaryColors.current.secondaryTextColor,
                     style = TextStyle(
                         fontWeight = FontWeight.Normal,
                         fontFamily = fonts
                     )
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
-                cursorColor = MaterialTheme.colors.primaryTextColor,
+            colors = TextFieldDefaults.colors(
+                cursorColor = LocalTravelDiaryColors.current.primaryTextColor,
                 focusedIndicatorColor = Color.Transparent,
-                backgroundColor = backgroundColor,
-                textColor = MaterialTheme.colors.primaryTextColor,
                 unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
+                disabledIndicatorColor = Color.Transparent,
+                focusedContainerColor = backgroundColor,
+                unfocusedContainerColor = backgroundColor,
+                disabledContainerColor = backgroundColor
             ),
             visualTransformation = if (passwordIsVisible) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
             },
-            keyboardOptions = KeyboardOptions(keyboardType = inputType),
-            modifier = Modifier.weight(1f)
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done, keyboardType = inputType),
+            modifier = Modifier.weight(1f),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
         )
 
         if (passwordInput) {
@@ -141,7 +141,7 @@ fun CustomTextField(
             Image(
                 imageVector = image,
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.secondaryTextColor),
+                colorFilter = ColorFilter.tint(LocalTravelDiaryColors.current.secondaryTextColor),
                 modifier = Modifier
                     .size(24.dp)
                     .align(Alignment.CenterVertically)
@@ -150,13 +150,5 @@ fun CustomTextField(
                     }
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CustomTextFieldPreview() {
-    TravelDiaryTheme {
-        CustomTextField(hint = "Hint", onValueChange = {})
     }
 }

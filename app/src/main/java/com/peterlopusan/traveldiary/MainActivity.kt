@@ -1,6 +1,5 @@
 package com.peterlopusan.traveldiary
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,11 +33,11 @@ import com.peterlopusan.traveldiary.ui.screens.settings.AboutMyHomelandScreen
 import com.peterlopusan.traveldiary.ui.screens.settings.ChangeUserDataScreen
 import com.peterlopusan.traveldiary.ui.screens.settings.SettingsScreen
 import com.peterlopusan.traveldiary.ui.theme.TravelDiaryTheme
-import com.peterlopusan.traveldiary.ui.viewModels.AuthViewModel
-import com.peterlopusan.traveldiary.ui.viewModels.CountryViewModel
-import com.peterlopusan.traveldiary.ui.viewModels.FlightViewModel
-import com.peterlopusan.traveldiary.ui.viewModels.MapViewModel
-import com.peterlopusan.traveldiary.ui.viewModels.PlaceViewModel
+import com.peterlopusan.traveldiary.viewModels.AuthViewModel
+import com.peterlopusan.traveldiary.viewModels.CountryViewModel
+import com.peterlopusan.traveldiary.viewModels.FlightViewModel
+import com.peterlopusan.traveldiary.viewModels.MapViewModel
+import com.peterlopusan.traveldiary.viewModels.PlaceViewModel
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -63,20 +61,16 @@ class MainActivity : ComponentActivity() {
 
     private fun setLanguage(language: String) {
         val locale = Locale(language.lowercase())
-        val application = this.application
-        val applicationResources = application.resources
-        val activityResources = this.resources
         Locale.setDefault(locale)
-        setResources(applicationResources, locale)
-        setResources(activityResources, locale)
+        setResources(this.application.resources, locale)
+        setResources(this.resources, locale)
     }
 
     private fun setResources(resources: Resources, locale: Locale) {
-        val displayMetrics = resources.displayMetrics
         val configuration = resources.configuration
         configuration.setLocale(locale)
         configuration.setLayoutDirection(locale)
-        resources.updateConfiguration(configuration, displayMetrics)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
 
@@ -89,8 +83,6 @@ class MainActivity : ComponentActivity() {
         lateinit var instance: MainActivity
             private set
 
-        @SuppressLint("StaticFieldLeak")
-        lateinit var navController: NavController
         lateinit var authViewModel: AuthViewModel
         lateinit var countryViewModel: CountryViewModel
         lateinit var flightViewModel: FlightViewModel
@@ -103,91 +95,84 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TravelDiaryAppScreen() {
     val navController = rememberNavController()
-    val authViewModel: AuthViewModel = viewModel()
-    val countryViewModel: CountryViewModel = viewModel()
-    val flightViewModel: FlightViewModel = viewModel()
-    val placeViewModel: PlaceViewModel = viewModel()
-    val mapViewModel: MapViewModel = viewModel()
 
-    MainActivity.navController = navController
-    MainActivity.authViewModel = authViewModel
-    MainActivity.countryViewModel = countryViewModel
-    MainActivity.flightViewModel = flightViewModel
-    MainActivity.placeViewModel = placeViewModel
-    MainActivity.mapViewModel = mapViewModel
+    MainActivity.authViewModel = viewModel()
+    MainActivity.countryViewModel = viewModel()
+    MainActivity.flightViewModel = viewModel()
+    MainActivity.placeViewModel = viewModel()
+    MainActivity.mapViewModel = viewModel()
 
     NavHost(
         navController = navController,
         startDestination = if (MainActivity.authViewModel.isUserLogged()) TravelDiaryRoutes.MainScreen.name else TravelDiaryRoutes.Login.name
     ) {
         composable(route = TravelDiaryRoutes.Login.name) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.MainScreen.name) {
-            MainScreen()
+            MainScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.CreateAccount.name) {
-            CreateAccount()
+            CreateAccount(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.SelectCountryScreen.name) {
-            SelectCountryScreen()
+            SelectCountryScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.AddOrEditCountryScreen.name) {
-            AddOrEditCountryScreen()
+            AddOrEditCountryScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.VisitedCountryDetailScreen.name) {
-            VisitedCountryDetailScreen()
+            VisitedCountryDetailScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.AddOrEditFlightScreen.name) {
-            AddOrEditFlightScreen()
+            AddOrEditFlightScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.SelectAirportScreen.name) {
-            SelectAirportScreen()
+            SelectAirportScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.CompletedFlightDetailScreen.name) {
-            CompletedFlightDetailScreen()
+            CompletedFlightDetailScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.AddOrEditPlaceScreen.name) {
-            AddOrEditPlaceScreen()
+            AddOrEditPlaceScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.SelectCityScreen.name) {
-            SelectCityScreen()
+            SelectCityScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.GoogleMapsScreen.name) {
-            GoogleMapsScreen()
+            GoogleMapsScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.VisitedPlaceDetailScreen.name) {
-            VisitedPlaceDetailScreen()
+            VisitedPlaceDetailScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.SettingsScreen.name) {
-            SettingsScreen()
+            SettingsScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.AboutMyHomelandScreen.name) {
-            AboutMyHomelandScreen()
+            AboutMyHomelandScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.ChangeUserDataScreen.name) {
-            ChangeUserDataScreen()
+            ChangeUserDataScreen(navController = navController)
         }
 
         composable(route = TravelDiaryRoutes.ForgottenPasswordScreen.name) {
-            ForgottenPasswordScreen()
+            ForgottenPasswordScreen(navController = navController)
         }
-
     }
 }
 

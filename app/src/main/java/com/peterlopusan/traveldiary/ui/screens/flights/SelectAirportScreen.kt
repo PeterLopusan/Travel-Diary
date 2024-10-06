@@ -17,8 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,23 +37,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.flight.Airport
+import com.peterlopusan.traveldiary.models.flight.Airport
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.openMap
 import kotlinx.coroutines.launch
 
 @Composable
-fun SelectAirportScreen() {
+fun SelectAirportScreen(navController: NavController) {
     val viewModel = MainActivity.flightViewModel
     val scope = rememberCoroutineScope()
     val airportList: SnapshotStateList<Airport> = remember { mutableStateListOf() }
@@ -63,10 +60,11 @@ fun SelectAirportScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.select_airport_screen_toolbar_title),
             showBackButton = true
         )
@@ -74,7 +72,7 @@ fun SelectAirportScreen() {
         Box(
             modifier = Modifier
                 .weight(1f)
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
         ) {
             LazyColumn {
@@ -83,7 +81,7 @@ fun SelectAirportScreen() {
                         modifier = Modifier
                             .clickable {
                                 viewModel.setSelectedAirport(airport)
-                                MainActivity.navController.popBackStack()
+                                navController.popBackStack()
                             },
                         airport = airport,
                         index = index
@@ -96,16 +94,16 @@ fun SelectAirportScreen() {
         Column(
             Modifier
                 .clip(shape = RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
-                .background(MaterialTheme.colors.secondaryBackground)
+                .background(LocalTravelDiaryColors.current.secondaryBackground)
                 .padding(15.dp)
 
         ) {
             CustomTextField(
                 hint = stringResource(id = R.string.select_airport_screen_search),
                 text = searchText,
-                borderColor = MaterialTheme.colors.secondaryTextColor,
+                borderColor = LocalTravelDiaryColors.current.secondaryTextColor,
                 onValueChange = { searchText = it },
-                startIcon = R.drawable.search_icon,
+                icon = R.drawable.search_icon,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -149,7 +147,7 @@ fun SelectAirportItem(modifier: Modifier, airport: Airport, index: Int) {
         modifier = modifier
             .fillMaxSize()
             .clip(shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .padding(10.dp),
         horizontalArrangement = Arrangement.Start
     ) {
@@ -166,7 +164,7 @@ fun SelectAirportItem(modifier: Modifier, airport: Airport, index: Int) {
         Column(Modifier.weight(1f)) {
             Text(
                 text = airport.name ?: "",
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -177,7 +175,7 @@ fun SelectAirportItem(modifier: Modifier, airport: Airport, index: Int) {
 
             Text(
                 text = stringResource(id = R.string.select_airport_screen_city, airport.city ?: ""),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -187,7 +185,7 @@ fun SelectAirportItem(modifier: Modifier, airport: Airport, index: Int) {
 
             Text(
                 text = stringResource(id = R.string.select_airport_screen_country, countryName),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
@@ -197,7 +195,7 @@ fun SelectAirportItem(modifier: Modifier, airport: Airport, index: Int) {
 
             Text(
                 text = stringResource(id = R.string.select_airport_screen_iata, airport.iata ?: ""),
-                color = MaterialTheme.colors.secondaryTextColor,
+                color = LocalTravelDiaryColors.current.secondaryTextColor,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,

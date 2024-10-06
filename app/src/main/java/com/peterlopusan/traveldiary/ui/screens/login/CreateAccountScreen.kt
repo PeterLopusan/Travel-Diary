@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -30,6 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
@@ -38,14 +39,12 @@ import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.TravelDiaryTheme
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.utils.showLogs
 import com.peterlopusan.traveldiary.utils.showToast
 
 @Composable
-fun CreateAccount() {
+fun CreateAccount(navController: NavController) {
     val countryViewModel = MainActivity.countryViewModel
     val authViewModel = MainActivity.authViewModel
     var firstname by remember { mutableStateOf(authViewModel.createBody.firstname) }
@@ -69,10 +68,11 @@ fun CreateAccount() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.create_account_screen_toolbar_title),
             showBackButton = true
         )
@@ -80,14 +80,14 @@ fun CreateAccount() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -111,7 +111,7 @@ fun CreateAccount() {
                         firstname = it
                         authViewModel.createBody.firstname = it
                     },
-                    startIcon = R.drawable.person_icon,
+                    icon = R.drawable.person_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -124,7 +124,7 @@ fun CreateAccount() {
                         lastname = it
                         authViewModel.createBody.lastname = it
                     },
-                    startIcon = R.drawable.person_icon,
+                    icon = R.drawable.person_icon,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -137,7 +137,7 @@ fun CreateAccount() {
                         email = it
                         authViewModel.createBody.email = it
                     },
-                    startIcon = R.drawable.email_icon,
+                    icon = R.drawable.email_icon,
                     modifier = Modifier.fillMaxWidth(),
                     inputType = KeyboardType.Email
                 )
@@ -151,7 +151,7 @@ fun CreateAccount() {
                         password = it
                         authViewModel.createBody.password = it
                     },
-                    startIcon = R.drawable.password_icon,
+                    icon = R.drawable.password_icon,
                     passwordInput = true,
                     modifier = Modifier.fillMaxWidth(),
                     inputType = KeyboardType.Password
@@ -166,7 +166,7 @@ fun CreateAccount() {
                         confirmPassword = it
                         authViewModel.createBody.confirmPassword = it
                     },
-                    startIcon = R.drawable.password_icon,
+                    icon = R.drawable.password_icon,
                     passwordInput = true,
                     modifier = Modifier.fillMaxWidth(),
                     inputType = KeyboardType.Password
@@ -183,7 +183,7 @@ fun CreateAccount() {
                         .clickable {
                             resetValues = false
                             countryViewModel.countryCodesForFiltering.clear()
-                            MainActivity.navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
+                            navController.navigate(TravelDiaryRoutes.SelectCountryScreen.name)
                         }
                 )
 
@@ -201,7 +201,7 @@ fun CreateAccount() {
                             showLoading = true
                             authViewModel.createAccount(countryCode = selectedCountry?.shortname2 ?: "").observe(MainActivity.instance) { isSuccessful ->
                                 if (isSuccessful) {
-                                    MainActivity.navController.navigate(TravelDiaryRoutes.MainScreen.name) {
+                                    navController.navigate(TravelDiaryRoutes.MainScreen.name) {
                                         popUpTo(TravelDiaryRoutes.Login.name) { inclusive = true }
                                     }
                                 }
@@ -223,7 +223,7 @@ fun CreateAccount() {
 fun CreateAccountPreview() {
     TravelDiaryTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            CreateAccount()
+            CreateAccount(navController = rememberNavController())
         }
     }
 }

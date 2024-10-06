@@ -1,5 +1,6 @@
 package com.peterlopusan.traveldiary.ui.screens.countries
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -25,35 +25,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.models.country.Country
-import com.peterlopusan.traveldiary.data.models.country.CountryName
-import com.peterlopusan.traveldiary.data.models.country.CurrenciesInfo
+import com.peterlopusan.traveldiary.models.country.Country
+import com.peterlopusan.traveldiary.models.country.CountryName
+import com.peterlopusan.traveldiary.models.country.CurrenciesInfo
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.ConfirmAlertDialog
 import com.peterlopusan.traveldiary.ui.components.InfoCard
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.primaryTextColor
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
 import com.peterlopusan.traveldiary.utils.TranslateApiManager
 import com.peterlopusan.traveldiary.utils.formatNumberWithSpaces
 import com.peterlopusan.traveldiary.utils.getStringFromList
+import com.peterlopusan.traveldiary.utils.openMap
 import com.peterlopusan.traveldiary.utils.removeSquareBrackets
 
 
 @Composable
-fun VisitedCountryDetailScreen() {
+fun VisitedCountryDetailScreen(navController: NavController) {
     val viewModel = MainActivity.countryViewModel
     var resetValues by remember { mutableStateOf(true) }
     val visitedCountry by remember { mutableStateOf(MainActivity.countryViewModel.visitedCountry) }
@@ -76,7 +77,7 @@ fun VisitedCountryDetailScreen() {
                 showAlert = !showAlert
                 viewModel.deleteCountryVisit().observe(MainActivity.instance) {
                     if (it == true) {
-                        MainActivity.navController.popBackStack()
+                        navController.popBackStack()
                     }
 
                     showLoading = false
@@ -93,16 +94,17 @@ fun VisitedCountryDetailScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
 
         Toolbar(
+            navController = navController,
             title = stringResource(id = R.string.visited_country_detail_screen_toolbar_title),
             showBackButton = true,
             editButtonClick = {
                 resetValues = false
-                MainActivity.navController.navigate(TravelDiaryRoutes.AddOrEditCountryScreen.name)
+                navController.navigate(TravelDiaryRoutes.AddOrEditCountryScreen.name)
             },
             deleteButtonClick = {
                 showAlert = !showAlert
@@ -112,7 +114,7 @@ fun VisitedCountryDetailScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -120,7 +122,7 @@ fun VisitedCountryDetailScreen() {
 
             Text(
                 text = stringResource(id = R.string.visited_country_detail_screen_about_your_visit),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -134,7 +136,7 @@ fun VisitedCountryDetailScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .padding(15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -159,7 +161,7 @@ fun VisitedCountryDetailScreen() {
 
             Text(
                 text = stringResource(id = R.string.visited_country_detail_screen_about_country),
-                color = MaterialTheme.colors.primaryTextColor,
+                color = LocalTravelDiaryColors.current.primaryTextColor,
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -195,7 +197,7 @@ fun CountryInfoCard(countryInfo: Country?) {
     Column(
         modifier = Modifier
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colors.secondaryBackground)
+            .background(LocalTravelDiaryColors.current.secondaryBackground)
             .fillMaxWidth()
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -274,7 +276,7 @@ fun CountryInfoCard(countryInfo: Country?) {
         Spacer(modifier = Modifier.height(20.dp))
 
         InfoCard(
-            drawableImage = R.drawable.date_icon,
+            drawableImage = R.drawable.time_icon,
             title = stringResource(id = R.string.visited_country_detail_screen_time_zones),
             text = getStringFromList(countryInfo?.timezones)
         )
@@ -294,6 +296,25 @@ fun CountryInfoCard(countryInfo: Country?) {
             title = stringResource(id = R.string.visited_country_detail_screen_call_number),
             text = getStringFromList(countryInfo?.callNumber?.getCallNumbers())
         )
+
+        if (countryInfo?.latlng != null) {
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.navigate_to_map_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        if (countryInfo.latlng.size >= 2) {
+                            val latitude = countryInfo.latlng[0]
+                            val longitude = countryInfo.latlng[1]
+                            openMap(latitude, longitude, 6)
+                        }
+                    }
+            )
+        }
     }
 }
 

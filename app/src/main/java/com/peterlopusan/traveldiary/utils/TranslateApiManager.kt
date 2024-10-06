@@ -5,8 +5,8 @@ import com.peterlopusan.traveldiary.R
 import com.peterlopusan.traveldiary.africa
 import com.peterlopusan.traveldiary.antarctica
 import com.peterlopusan.traveldiary.asia
-import com.peterlopusan.traveldiary.data.models.country.Country
 import com.peterlopusan.traveldiary.europe
+import com.peterlopusan.traveldiary.models.country.Country
 import com.peterlopusan.traveldiary.northAmerica
 import com.peterlopusan.traveldiary.oceania
 import com.peterlopusan.traveldiary.sharedPreferences.SharedPreferencesManager
@@ -435,5 +435,22 @@ class TranslateApiManager {
         }
 
         return translatedCurrency
+    }
+
+    fun translateErrorMessage(message: String?): String? {
+        val language = SharedPreferencesManager().getLanguage()
+        var translatedMessage = message
+
+        if (language == "SK" || Locale.getDefault().language == "sk") {
+            translatedMessage = when (translatedMessage) {
+                "The email address is badly formatted." -> "E-mailová adresa má zlý formát"
+                "The supplied auth credential is incorrect, malformed or has expired." -> "Prihlasovacie údaje sú nesprávne"
+                "The email address is already in use by another account." -> "E-mailovú adresu už používa iný účet"
+                "The given password is invalid. [ Password should be at least 6 characters ]" -> "Heslo by malo mať aspoň 6 znakov"
+                else -> translatedMessage
+            }
+        }
+
+        return translatedMessage
     }
 }

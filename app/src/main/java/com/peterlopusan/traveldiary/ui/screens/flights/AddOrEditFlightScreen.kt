@@ -15,8 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -33,29 +32,27 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.peterlopusan.traveldiary.MainActivity
 import com.peterlopusan.traveldiary.R
-import com.peterlopusan.traveldiary.data.enums.SelectAirportTypeEnum
-import com.peterlopusan.traveldiary.data.models.flight.CompletedFlight
+import com.peterlopusan.traveldiary.enums.SelectAirportTypeEnum
+import com.peterlopusan.traveldiary.models.flight.CompletedFlight
 import com.peterlopusan.traveldiary.ui.TravelDiaryRoutes
 import com.peterlopusan.traveldiary.ui.components.CustomButton
 import com.peterlopusan.traveldiary.ui.components.CustomCheckbox
 import com.peterlopusan.traveldiary.ui.components.CustomTextField
 import com.peterlopusan.traveldiary.ui.components.LoadingIndicator
 import com.peterlopusan.traveldiary.ui.components.Toolbar
+import com.peterlopusan.traveldiary.ui.theme.LocalTravelDiaryColors
 import com.peterlopusan.traveldiary.ui.theme.fonts
-import com.peterlopusan.traveldiary.ui.theme.primaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryBackground
-import com.peterlopusan.traveldiary.ui.theme.secondaryTextColor
 import com.peterlopusan.traveldiary.utils.getCalendarFromString
 import com.peterlopusan.traveldiary.utils.showDatePicker
-import com.peterlopusan.traveldiary.utils.showLogs
 import com.peterlopusan.traveldiary.utils.showToast
 
 @Composable
-fun AddOrEditFlightScreen() {
+fun AddOrEditFlightScreen(navController: NavController) {
     val viewModel = MainActivity.flightViewModel
-    var returnFlightShow = remember { mutableStateOf(viewModel.completedFlight2 != null) }
+    val returnFlightVisible = remember { mutableStateOf(viewModel.completedFlight2 != null) }
     var resetValues by remember { mutableStateOf(true) }
     val edit = viewModel.completedFlight1?.id != null
     var showLoading by remember { mutableStateOf(false) }
@@ -72,10 +69,11 @@ fun AddOrEditFlightScreen() {
 
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colors.primaryBackground)
+            .background(LocalTravelDiaryColors.current.primaryBackground)
             .fillMaxSize()
     ) {
         Toolbar(
+            navController = navController,
             title = stringResource(id = if (edit) R.string.add_flight_screen_toolbar_edit_title else R.string.add_flight_screen_toolbar_add_title),
             showBackButton = true
         )
@@ -83,7 +81,7 @@ fun AddOrEditFlightScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.primaryBackground)
+                .background(LocalTravelDiaryColors.current.primaryBackground)
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -91,7 +89,7 @@ fun AddOrEditFlightScreen() {
             Column(
                 modifier = Modifier
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colors.secondaryBackground)
+                    .background(LocalTravelDiaryColors.current.secondaryBackground)
                     .fillMaxWidth()
                     .align(Alignment.Center)
                     .padding(horizontal = 15.dp, vertical = 30.dp),
@@ -108,7 +106,7 @@ fun AddOrEditFlightScreen() {
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                FlightInfoCard(returnFlight = false) {
+                FlightInfoCard(navController = navController,returnFlight = false) {
                     resetValues = false
                 }
 
@@ -118,7 +116,7 @@ fun AddOrEditFlightScreen() {
                     CustomCheckbox(
                         modifier = Modifier.align(Alignment.Start),
                         text = stringResource(id = R.string.add_flight_screen_flight_return_flight),
-                        isChecked = returnFlightShow,
+                        isChecked = returnFlightVisible,
                         onCheckedChange = { isChecked ->
                             if (isChecked) {
                                 viewModel.completedFlight2 = CompletedFlight(
@@ -130,15 +128,15 @@ fun AddOrEditFlightScreen() {
                             } else {
                                 viewModel.completedFlight2 = null
                             }
-                            returnFlightShow.value = isChecked
+                            returnFlightVisible.value = isChecked
                         }
                     )
 
                     Spacer(modifier = Modifier.height(15.dp))
                 }
 
-                if (returnFlightShow.value) {
-                    FlightInfoCard(returnFlight = true) {
+                if (returnFlightVisible.value) {
+                    FlightInfoCard(navController = navController, returnFlight = true) {
                         resetValues = false
                     }
                     Spacer(modifier = Modifier.height(15.dp))
@@ -155,7 +153,7 @@ fun AddOrEditFlightScreen() {
                                     if (edit) {
                                         resetValues = false
                                     }
-                                    MainActivity.navController.popBackStack()
+                                    navController.popBackStack()
                                 }
                                 showLoading = false
                             }
@@ -171,6 +169,7 @@ fun AddOrEditFlightScreen() {
 
 @Composable
 fun FlightInfoCard(
+    navController: NavController,
     returnFlight: Boolean,
     selectAirportAction: () -> Unit
 ) {
@@ -200,9 +199,9 @@ fun FlightInfoCard(
         clickAction = {
             selectAirportAction()
             viewModel.selectAirportType = if (returnFlight) SelectAirportTypeEnum.DEPARTURE_SECOND else SelectAirportTypeEnum.DEPARTURE_FIRST
-            MainActivity.navController.navigate(TravelDiaryRoutes.SelectAirportScreen.name)
+            navController.navigate(TravelDiaryRoutes.SelectAirportScreen.name)
         },
-        startIcon = R.drawable.departure_icon,
+        icon = R.drawable.departure_icon,
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -215,9 +214,9 @@ fun FlightInfoCard(
         clickAction = {
             selectAirportAction()
             viewModel.selectAirportType = if (returnFlight) SelectAirportTypeEnum.ARRIVAL_SECOND else SelectAirportTypeEnum.ARRIVAL_FIRST
-            MainActivity.navController.navigate(TravelDiaryRoutes.SelectAirportScreen.name)
+            navController.navigate(TravelDiaryRoutes.SelectAirportScreen.name)
         },
-        startIcon = R.drawable.arrival_icon,
+        icon = R.drawable.arrival_icon,
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -233,7 +232,7 @@ fun FlightInfoCard(
                 completedFlight?.flightDate = flightDate
             }
         },
-        startIcon = R.drawable.date_icon,
+        icon = R.drawable.date_icon,
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -241,7 +240,7 @@ fun FlightInfoCard(
 
     Text(
         text = stringResource(id = R.string.add_flight_screen_flight_duration),
-        color = MaterialTheme.colors.secondaryTextColor,
+        color = LocalTravelDiaryColors.current.secondaryTextColor,
         style = TextStyle(
             fontWeight = FontWeight.Normal,
             fontFamily = fonts
@@ -260,7 +259,7 @@ fun FlightInfoCard(
                     completedFlight?.durationHours = it
                 }
             },
-            startIcon = R.drawable.time_icon,
+            icon = R.drawable.time_icon,
             modifier = Modifier.weight(1f)
         )
 
@@ -283,7 +282,7 @@ fun FlightInfoCard(
                     }
                 }
             },
-            startIcon = R.drawable.time_icon,
+            icon = R.drawable.time_icon,
             modifier = Modifier.weight(1f)
         )
     }
